@@ -1,0 +1,273 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define N 5
+
+//****************顺序队列
+
+/*void rudui(int* a, int* rear, int i) {
+	a[(*rear)] = i;
+	(*rear)++;
+}
+void chudui(int* a, int front, int rear) {
+	for (; front != rear;front++) {
+		printf("出队的元素%d\n", a[front]);
+	}
+}
+int main() {
+	int a[100];
+	int front=0, rear=0;
+	rudui(a, &rear, 1); rudui(a, &rear, 2); rudui(a, &rear, 3); rudui(a, &rear, 4);
+	chudui(a,front ,rear); 
+	return 0;
+}*/
+
+//*****************循环队列
+
+/*int PanDuanMan(int rear,int front) {
+	if ((rear + 1) % N == front) {
+		printf("队列为满\n");
+		return 1;
+	}
+	else {
+		printf("队列未满\n");
+		return 0;
+	}
+}
+int PanDuanKong(int rear,int front) {
+	if (rear % N == front) {
+		printf("队列为空\n");
+		return 1;
+	}
+	else {
+		printf("队列不为空\n");
+		return 0;
+	}
+}
+int inQueue(int* a,int rear,int front,int i) {//入队
+	if (PanDuanMan(rear, front)) {
+		printf("入队列失败\n");
+		return rear;
+	}
+	else {
+		printf("入队成功\n");
+		a[rear % N] = i;
+		rear = (rear + 1) % N;
+		return rear;
+	}
+}
+int outQueue(int* a, int rear, int front) {//出队
+	if (PanDuanKong(rear,front)) {
+		printf("出队失败\n");
+		return front;
+	}
+	else {
+		printf("出队成功\n");
+		printf("出队的元素为%d\n",a[front]);
+		front = (front + 1) % N;
+		return front;
+	}
+}
+int main() {
+	int a[N];
+	int i;
+	int front = 0, rear = 0;
+	rear = inQueue(a, rear, front, 1); printf("******************\n");
+	rear = inQueue(a, rear, front, 2); printf("******************\n");
+	rear = inQueue(a, rear, front, 3); printf("******************\n");
+	rear = inQueue(a, rear, front, 4); printf("******************\n");
+	front = outQueue(a, rear, front); printf("******************\n");
+	front = outQueue(a, rear, front); printf("******************\n");
+	front = outQueue(a, rear, front); printf("******************\n");
+	front = outQueue(a, rear, front); printf("******************\n");
+	return 0;
+}*/
+
+//*****************链队列
+
+/*typedef struct node {
+	int data;
+	struct node* next;
+}Node;
+typedef struct QueueDL {
+	Node* feont;
+	Node* rear;
+	int Queuesize;
+}Queue;
+//创建节点
+Node* intNode(int i) {
+	Node* newnode = (Node*)  malloc(sizeof(Node));
+	newnode->data = i;
+	newnode->next = NULL;
+	return newnode;
+}
+//创建队列
+Queue* intQueue() {
+	Queue* q = (Queue*)malloc(sizeof(Queue));
+	q->feont = q->rear = NULL;
+	q->Queuesize = 0;
+	return q;
+}
+//入队
+Queue* inQueue(int i,Queue* q) {
+	Node* newNode = intNode(i);
+	if (q->Queuesize == 0)                //队列为空
+		q->feont = q->rear = newNode;
+	else {                                //队列不为空
+		q->rear->next = newNode;
+		q->rear = newNode;
+	}
+	q->Queuesize++;
+	q->rear->data = i;
+	q->rear->next = NULL;
+	return q;
+}
+//判断队列是否为空     空返回1，不空返回0
+int PanDuanKong(Queue* q) {
+	if (q->Queuesize == 0)
+		return 1;
+	else
+		return 0;
+}
+//出队
+Queue* outQueue(Queue* q) {
+	Node* p;
+	if (PanDuanKong(q)) {
+		printf("队列为空，无法出队\n");
+		return q;
+	}
+	else {
+		p = q->feont->next;
+		printf("元素%d\n",q->feont->data);
+		free(q->feont);
+		q->feont = p;
+		q->Queuesize--;
+		return q;
+	}
+}
+int main() {
+	int i,j;
+	
+	Queue* myQueue = intQueue();
+	printf("入队4个元素\n");
+	for (i = 0; i < 4; i++) {
+		inQueue((i+1),myQueue );
+		printf("元素%d\n",(i+1));
+	}
+	printf("出队4个元素\n");
+	for (i = 0; i < 4; i++) {
+		outQueue(myQueue);
+	}
+	return 0;
+}*/
+
+//*****************队列的增删查
+	
+typedef struct QNode {//建立队列
+	int data;
+	struct QNde* next;
+}Node;
+typedef struct Queue {
+	Node* front;
+	Node* rear;
+}Queue;
+Queue* intQueue(Queue* q){
+	q->front = q->rear = (Node*)malloc(sizeof(Node));
+	if (q->front == NULL && q->rear == NULL)
+		exit(0);
+	q->front = q->rear = NULL;
+	return q;
+}
+int PanDuanKong(Queue* q) {//判断队列是否为空 ，空为1，不空为0
+	if (q->front == q->rear) {
+		printf("队列为空");
+			return 1;
+	}
+	else {
+		printf("队列不为空");
+		return 0;
+	}
+}
+void WeiChaQueue(Queue* q,int i) {//插入元素尾插
+	Node* p = (Node*)malloc(sizeof(Node));
+	p->data = i;
+	q->rear->next = p;
+	q->rear = p;
+	printf("入队成功");
+}
+void TouChaQueue(Queue* q, int i) {//插入元素头插
+	Node* p1 = (Node*)malloc(sizeof(Node));
+	Node* p2;
+	p2 = q->front;
+	q->front = p1;
+	p1->next = p2;
+}
+void ChaQueue(Queue* q, Node* pp, int i) {//在pp位置前插入
+	Node* p1 = NULL;
+	p1 = q->front;
+	while (p1 ->next) {
+		Node* p2 = p1;
+		p1 = p1->next;
+		if (p1 == pp) {
+			Node* p3 = (Node*)malloc(sizeof(Node));
+			p3->data = i;
+			p3->next = p1;
+			p2->next = p3;
+		}
+	}
+}
+void TouShanQueue(Queue* q) {//删除元素头删
+	Node* p;
+	if (q->front == q->rear) {
+		printf("链表为空,无法删除");
+	}
+	p = q->front->next;
+	q->front->next = p->next;
+	free(p);
+}
+void WeiShanQueue(Queue* q) {//删除元素尾删
+	if (q->front == q->rear) {
+		printf("链表为空,无法删除");
+	}
+	else if (!q->front->next) {
+		free(q->front);
+		q->front = NULL;
+	}
+	else {
+		Node* p1=NULL;
+		Node* p2 = q->front;
+		while (p2->next) {
+			p1 = p2;
+			p2 = p2->next;
+		}
+		p1->next = NULL;
+		free(p2);
+		p2 = NULL;
+	}
+}
+void ShanQueue(Queue* q, Node* pp) {//删除队列中pp位置的元素
+	Node* p1 = NULL;
+	Node* p2 = NULL;
+	p1 = q->front;
+	while (p1!=pp) {
+		p2 = p1;
+		p1 = p1->next;
+	}
+	if (!p1->next) {
+		WeiShanQueue(q);
+	}
+	else {
+		p2->next = p1->next;
+		free(p1);
+	}
+}
+Node* ChaQueue(Queue* q, int i) {//查找元素
+	Node* p;
+	p = q->front;
+	while (p!=q->rear->next) {
+		if (p->data == i) {
+			return p;
+		}
+		p = p->next;
+	}
+	return 0;
+}
