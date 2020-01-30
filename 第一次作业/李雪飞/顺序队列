@@ -1,0 +1,168 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef int Data;
+
+
+void Createsqueue(Data* sq)//创建队列
+{
+	int value, len;
+	printf("请输入队列大小:");
+	scanf_s("%d", &len);
+	for (int count = 0; count < len; count++)
+	{
+		printf("队列的第%d个元素:", count + 1);
+		scanf_s("%d", &value);
+		sq[count] = value;
+	}
+	printf("创建成功!\n");
+}
+
+void Traversesqueue(Data* sq)//遍历
+{
+	int count = 0, len;
+	len = Lengthsqueue(sq);
+	printf("队列为:");
+	for (; count < len; count++)
+		printf("%d ", sq[count]);
+	printf("\n");
+}
+
+int Findsqueue(Data* sq)//查找
+{
+	int count = 0, len, x;
+	len = Lengthsqueue(sq);    //求队列大小
+	printf("请输入查找的元素:");
+	scanf_s("%d", &x);
+	while (sq[count] != x && count < len)   //判断数组中是否能找到
+		count++;
+	if (count == len)					//未找到
+		printf("查找失败!队列中无此元素!\n");
+	else							    //返回元素的相对位置
+		printf("查找成功!\n在队列中的位置为:%d", count + 1);
+}
+
+void Altersqueue(Data* sq)//修改
+{
+	int count = 0, len, x, value;
+	len = Lengthsqueue(sq);    //求队列大小
+
+	printf("请输入修改的元素:");
+	scanf_s("%d", &x);
+	printf("请输入想要修改为:");
+	scanf_s("%d", &value);
+
+	while (sq[count] != x && count < len)   //判断数组中是否能找到
+		count++;
+	if (count == len)					//未找到
+		printf("数组中无此元素,无法修改!\n");
+	else							    //返回元素的相对位置
+	{
+		sq[count] = value;
+		printf("修改成功!\n");
+	}
+}
+
+void Insertsqueue(Data* sq)//增加个数
+{
+	int a, count, x, i;
+	int* len;
+
+	a = Lengthsqueue(sq);
+	len = &a;
+	printf("请输入插入元素的位置:");
+	scanf_s("%d", &i);
+	printf("请输入插入的元素:");
+	scanf_s("%d", &x);
+
+	if (i > * len || i < 0)
+		printf("数据过多");
+	if (i == *len)
+		sq[i] = x;
+	else
+	{
+		for (count = *len - 1; count >= i; count--)
+			sq[count + 1] = sq[count];
+		sq[i] = x;
+	}
+	*len = *len + 1;
+	printf("插入成功!\n");
+}
+
+void Deletesqueue(Data* sq)//删除
+{
+	int Loc, count = 0, x, a;
+	printf("请输入想要删除的元素:");
+	scanf_s("%d", &x);
+	int* len;
+
+	a = Lengthsqueue(sq);
+	len = &a;
+	while (sq[count] != x && count < *len)
+		count++;
+	if (count == *len)
+		printf("队列中没有此元素!\n");
+	else
+	{
+		Loc = count;			//找到，记录它在队列的位置
+		for (count = Loc; count < *len; count++)
+			sq[count] = sq[count + 1];
+		*len = *len - 1;
+		printf("已删除!在原队列第%d位\n", Loc + 1);
+	}
+}
+
+int Lengthsqueue(Data* sq)
+{
+	int i = 0, length = 0;
+	while (sq[i] != 0)
+	{
+		length++;
+		i++;
+	}
+	return (length);
+}
+
+int main()
+{
+	Data sq[100] = { 0 };
+	int input;
+	printf("即将创建队列!\n");
+	Createsqueue(sq);               
+	printf("队列创建完成!\n");
+	system("pause");
+	system("cls");
+
+	printf("选择你需要的操作：\n");
+	printf(" 1.增加 2.删除 3.查找 4.修改 \n");
+	while (1)
+	{
+		scanf_s("%d", &input);
+		switch (input)
+		{
+		
+		case 1:
+			Insertsqueue(sq);
+			break;
+		case 2:
+			Deletesqueue(sq);
+			break;
+		case 3:
+			Findsqueue(sq);
+			break;
+		case 4:
+			Altersqueue(sq);
+			break;
+		
+		default:
+			printf("input error!\n");
+			break;
+
+			system("pause");                 //暂停 
+			system("cls");					//清屏 
+			printf("选择你需要的操作：\n");
+			printf(" 1.增加 2.删除 3.查找 4.修改 \n");
+		}
+	}
+	return 0;
+}
