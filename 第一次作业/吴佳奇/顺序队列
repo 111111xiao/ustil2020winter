@@ -1,0 +1,97 @@
+
+//三丶顺序队列
+#include<stdio.h>
+#include<stdlib.h>
+#define MAXSIZE 10
+
+typedef struct queue //顺序结构体
+{
+	int data[MAXSIZE],*front,*tail,length;
+}queue;
+//初始化顺序队列
+queue* initqueue() {
+	queue* nqueue = (queue*)malloc(MAXSIZE * sizeof(queue));
+	nqueue->front = nqueue->tail = nqueue->data;
+	nqueue->length = 0;
+	return nqueue;
+}
+void print(queue* nqueue)//打印队列
+{
+	int i = nqueue->length, j;
+	for (j = 0; j < nqueue->length; j++)
+		printf("%d ", *(nqueue->front + j));
+	printf("\n");
+	nqueue->length = i;
+}
+void adddata(queue*nqueue,int data) //增加数据
+{
+	if (nqueue->length <= MAXSIZE)
+	{
+		*nqueue->tail = data;
+		nqueue->tail++;
+		nqueue->length++;
+	}
+	else
+		printf("队列已满 ，无法输入数据\n");
+}
+void deledata(queue* nqueue)//删除数据
+{
+	if (nqueue->length)
+	{
+		nqueue->front++;
+		nqueue->length--;
+	}
+	else
+		printf("队列为空，无法删除\n");
+}
+void change(queue* nqueue, int num1, int num2)//改变数据
+{
+	if (num1 <= nqueue->length)
+	{
+		*(nqueue->front + num1 - 1) = num2;
+		printf("将第%d个数改为%d后的队列为\n", num1, num2);
+		print(nqueue);
+
+	}
+	else
+		printf("数据不存在，无法修改\n");
+}
+
+void search(queue* nqueue, int num)//查找数据
+{
+	int i = 0,j=nqueue->length;
+	while (j)
+	{
+		if (*nqueue->front + nqueue->length - 1 == num)
+		{
+		printf("数据%d在队列中\n", num);
+			i = 1;
+			break;
+		}
+		j--;
+	}
+	if (i == 0)
+		printf("数据%d不在队列中\n", num);
+
+}
+
+int main() {
+	queue* nqueue=initqueue();
+	adddata(nqueue, 3);
+	adddata(nqueue, 5);
+	adddata(nqueue, 6);
+	adddata(nqueue, 9);
+	adddata(nqueue, 8);
+	print(nqueue);
+	deledata(nqueue);
+	deledata(nqueue);
+	deledata(nqueue);
+	print(nqueue);
+	change(nqueue, 2, 3);
+	change(nqueue, 1, 2);
+	change(nqueue, 9, 11);
+	search(nqueue, 5);
+	search(nqueue, 3);
+	free(nqueue);
+	return 0;
+}
