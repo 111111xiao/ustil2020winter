@@ -1,0 +1,212 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef structqueue;
+typedef struct
+{
+    int data;
+    struct Node* next;
+}Node;
+
+void Createqueue(Node* h)
+{
+    Node* h = NULL, * p = NULL, * q = NULL;
+    p = h = (Node*)malloc(sizeof(Node));
+    h->next = NULL;//指针域置为空
+    int len, i = 1;
+    printf("请输入链表大小:");
+    scanf_s("%d", &len);
+    for (; i <= len; i++)
+    {
+       q = (Node*)malloc(sizeof(Node));
+        printf("请输入第%d个元素:", i);
+        scanf_s("%d", &q->data);
+        q->next = NULL;
+        p->next = q;                 
+        p = q;                       
+    }
+    return;
+}
+void Traversesqueue(Node* h)
+{
+    Node* p;
+    p= h->next;
+    printf("遍历为:");
+    while (p != NULL)
+    {
+        printf("%d ", p->data);
+       p= p->next;
+    }
+}
+int Lengthqueue(Node* h)
+{
+    Node* p;
+    p = h->next;           
+    int num = 0;
+    while (p != NULL)
+    {
+        p = p->next;
+        num++;
+    }
+    return (num);
+}
+ int Findqueue(Node* h)
+{
+    Node* p;
+    p = h->next;//p指向第一个结点
+    int i = 0, len, count = 1;
+    printf("请输入想要查找元素的位置:");
+    scanf_s("%d", &i);
+    len = Lengthqueue(h);
+    if (i > len || i < 1)
+    {
+        printf("数组中无此元素。\n");
+        return (-1);
+    }
+    while (p != NULL && count < i)
+    {
+        p = p->next;
+        count++;
+    }
+    printf("查找成功!该元素为:%d\n", p->data);
+    return (0);
+}
+int Insertqueue(Node* h)
+{
+    Node* p, * s;
+    p = h->next;
+    int a, j = 0, i = 0;
+    int* len;
+
+    a = Lengthqueue(h);
+    len = &a;
+    printf("请输入插入元素的位置:");
+    scanf_s("%d", &i);
+
+    if (i > * len || i < 1)
+    {
+        printf("数据溢出,请扩充容量!");
+        exit(-1);
+    }
+    while (p != NULL && j < i - 1)
+    {
+        p = p->next;
+        j++;
+    }
+
+    int value;
+    printf("请输入插入的元素:");
+    scanf_s("%d", &value);
+
+    s = (Node*)malloc(sizeof(Node));//创建新结点
+    s->data = value;//插入
+    s->next = p->next;//连接
+    p->next = s;
+    *len = *len + 1;       
+    printf("操作成功!");
+}
+int Deletequeue(Node* h)
+{
+    Node* p, * q = NULL;
+    p = h;
+    int value, flag = 0;
+
+    printf("请输入想要删除的元素:");
+   scanf_s("%d", &value);
+    while (p->next != NULL && p->data != value)
+    {
+        q = p;
+        p = p->next;
+    }
+    if (p->data == value)
+    {
+        q->next = p->next;
+        printf("删除后:\n");
+        Traversesqueue(h);
+        free(p);
+        flag = 1;
+    }
+    if (!flag)
+        printf("Error!您搜索的元素不在服务区！");
+    return;
+}
+int Alterqueue(Node* h)
+{
+    Node* p;
+    p = h;
+    int value, flag = 0, n = 0;
+    printf("请输入想要修改的元素:");
+    scanf_s("%d", &value);
+    while (p->next != NULL && p->data != value)
+        p = p->next;
+    if (p->data == value)
+    {
+        printf("修改为:");
+        scanf_s("%d", &n);
+        p->data = n;
+        printf("修改成功!\n");
+        flag = 1;
+    }
+    if (!flag)
+        printf("Error!您想要修改的元素不在服务区！");
+    return;
+}
+
+int main()
+{
+    int i，j;                
+    Node* f = 0;          
+    Node* list;
+    printf("即将创建链表!\n");
+    list = Createqueue();              
+    printf("链表创建完成!\n");
+    system("pause");//暂停
+    system("cls");//清屏
+
+    printf("你需要的操作是：\n");
+    printf("1.遍历 2.增加 3.删除 4.查找 5.修改 6.退出\n");
+
+    while (~scanf_s("%d", &i))            
+    {
+        switch (i)
+        {
+        case 1:
+        {
+            Traversesqueue(list);               
+            break;
+        }
+        case 2:
+        {
+            Insertqueue(list);
+            break;
+        }
+        case 3:
+        {
+            Deletequeue(list);         
+            break;
+        }
+        case 4:
+        {
+            Findqueue(list);                
+            break;
+        }
+        case 5:
+        {
+            Alterqueue(list);                    
+            break;
+        }
+        case 6:
+            printf("谢谢使用\n");
+            break;
+        default:
+            printf("输入错误!请重新输入\n");
+            break;
+        }
+        system("pause");                 //暂停 
+        system("cls");     //清屏 
+        printf("选择你需要的操作：\n");
+        printf("1.遍历 2.增加 3.删除 4.查找 5.修改 6.退出\n");
+
+    }
+    return 0;
+}
