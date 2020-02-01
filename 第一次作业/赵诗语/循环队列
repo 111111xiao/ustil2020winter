@@ -1,0 +1,87 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+#define maxsize  6
+typedef struct Queue
+{
+int data[maxsize];
+int front, rear;
+}Queue,*pQueue;
+void init(pQueue q)
+{//初始化
+q->front = 0;
+q->rear = 0;
+}
+void add(pQueue q, int x) 
+{//增加
+    if ((q->rear + 1) % maxsize == q->front)
+    {
+        printf("overflow");
+        return;
+    }
+    else
+    {
+        q->rear = (q->rear + 1) % maxsize;
+        q->data[q->rear] = x;
+        printf("添加成功\n");
+    }
+}
+
+void Deletequeues(pQueue q)
+{//删除
+    if (q->front == q->rear) 
+    {
+        printf("null");
+        return;
+    }
+    else 
+    {
+        q->front = (q->front + 1) % maxsize;
+        printf("删除的元素是:%d\n", q->data[q->front]);
+    }
+}
+void traverseQuene(pQueue q) 
+{//遍历
+    int i = q->front;
+    while (i != q->rear)
+    {
+        i = (i + 1) % maxsize;
+        printf("%d ", q->data[i]);
+    }
+    printf("\n");
+}
+int main()
+{
+    pQueue q = (pQueue)malloc(sizeof(Queue));
+    init(q);
+    add(q, 1);
+    add(q, 2);
+    add(q, 3);
+    traverseQuene(q);
+    system("pause");
+    Deletequeues(q);
+    traverseQuene(q);
+    system("pause");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
