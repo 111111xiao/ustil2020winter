@@ -1,0 +1,169 @@
+#pragma region 链队列
+/*#include<stdio.h>
+#include<stdlib.h>
+typedef struct Node {
+	int age;
+	struct Node* next;
+}node;
+node* creat() {
+	node* head = (node*)malloc(sizeof(node));
+	head->next = NULL;
+	return head;
+}
+node* in(node* end, int age) {
+	node* mid = (node*)malloc(sizeof(node));
+	mid->age = age;
+	mid->next = NULL;
+	end->next = mid;
+	end = mid;
+	return end;
+}
+node* out(node* top, node* end) {
+	if (top->next == NULL) {
+		printf("\n队列为空。");
+		return end;
+	}
+	node* p = top->next;
+	printf("%d", p->age);
+	top->next = p->next;
+	if (end == p)
+		end = top;
+	free(p);
+	return end;
+}
+int main() {
+	node* head, * top, * end;
+	head = top = end = creat();
+	end = in(end, 1);
+	end = in(end, 2);
+	end = out(top, end);
+	end = out(top, end);
+	end = out(top, end);
+	return 0;
+}*/
+#pragma endregion
+#pragma region 顺序队列
+/*#include<stdio.h>
+#include<stdlib.h>
+int in(int* a, int end, int mid) {
+	a[end] = mid;
+	end++;
+	return end;
+}
+void out(int* a, int head, int end) {
+	while (head != end) {
+		printf("出队元素：%d\n", a[head]);
+		head++;
+	}
+}
+int main() {
+	int a[100];
+	int head, end;
+	head = end = 0;
+	end = in(a, end, 1);
+	end = in(a, end, 2);
+	end = in(a, end, 3);
+	out(a, head, end);
+	return 0;
+}*/
+#pragma endregion
+#pragma region 循环序列
+/*#include<stdio.h>
+#include<stdlib.h>
+#define max 5
+int in(int* a, int head, int end, int mid) {
+	if ((end + 1) % max == head) {
+		printf("空间已满");
+		return end;
+	}
+	a[end % max] = mid;
+	end++;
+	return end;
+}
+int out(int *a, int head, int end) {
+	if (head == end % max) {
+		printf("队列为空");
+		return head;
+	}
+	printf("%d", a[head]);
+	head = (head + 1) % max;
+	return head;
+}
+int main() {
+	int a[max];
+	int head, end;
+	head = end = 0;
+	end = in(a, head, end, 1);
+	end = in(a, head, end, 2);
+	end = in(a, head, end, 3);
+	end = in(a, head, end, 4);
+	head = out(a, head, end);
+	end = in(a, head, end, 5);
+	head = out(a, head, end);
+	end = in(a, head, end, 6);
+	head = out(a, head, end);
+	head = out(a, head, end);
+	head = out(a, head, end);
+	head = out(a, head, end);
+	head = out(a, head, end);
+	return 0;
+}*/
+#pragma endregion
+#pragma region 查
+/*typedef struct {
+	node* head;
+	nide* end;
+}Queue;
+void seek( Queue*sq)
+{
+	node* p = sq->head;
+
+	while (p->next != NULL)
+	{
+		p = p->next;
+		printf("%d", p->age);
+	}
+
+	printf("\n");
+}*/
+#pragma endregion
+#pragma region 增
+/*void add(Queue* Q, node*age) {
+	node L = (Node*)malloc(sizeof(Node));
+	L->age = age;
+	L->next = NULL;
+	Q.rear->next = L;
+	Q.rear = L;
+}*/
+#pragma endregion
+#pragma region 删
+/*int delete(Queue* Q) {
+	if (Q.end == Q.head)
+		return -1;
+	node p;
+	Queue e;
+	p = Q.head->next;
+	e = p->age;
+	Q.head->next = p->next;
+	if (Q.end == p) {
+		Q.end = Q.head;
+	free(p);
+	return e;
+}*/
+#pragma endregion
+#pragma region 改
+/*void change(Queue*Q, int n) {
+	node* t = age;
+	int i = 0;
+	while (i < n && t != NULL) {
+		t = t->next;
+		i++;
+	}
+	if (t != NULL) {
+		gets(t->name);
+		gets(t->number);
+	}
+	else
+		printf("不存在");
+}*/
+#pragma endregion
