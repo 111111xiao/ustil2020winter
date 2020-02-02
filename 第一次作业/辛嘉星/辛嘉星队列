@@ -1,0 +1,304 @@
+#include<stdio.h>
+#include<stdlib.h>
+//循环队列
+typedef int ElemType;
+typedef int Status;
+#define OK 1
+#define ERROR 0
+#define TRUE 1
+#define FALSE 0
+#define MAXSIZE 20
+typedef struct 
+{
+	ElemType data[MAXSIZE];
+	int front,  rear;
+}SqQueue;
+
+//初始化
+void initQueue(SqQueue &qu) 
+{
+	qu.front = qu.rear = 0;
+}
+
+//判断队列是否为空
+Status queueEmpty(SqQueue& qu) 
+{
+	if (qu.front == qu.rear)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+//入队
+Status enQueue(SqQueue& qu, ElemType x) 
+{
+	if ((qu.rear + 1) % MAXSIZE == qu.front)
+		return ERROR;
+	qu.data[qu.rear] = x;
+	qu.rear = (qu.rear + 1) % MAXSIZE;
+	return OK;
+}
+
+//出队
+Status deQueue(SqQueue& qu, ElemType& x) 
+{
+	if (qu.front == qu.rear)
+		return FALSE;
+	x = qu.data[qu.front];
+	qu.front = (qu.front + 1) % MAXSIZE;
+	return OK;
+}
+
+//判断是否满了
+Status isFullQueue(SqQueue qu) 
+{
+	if ((qu.rear + 1) % MAXSIZE == qu.front)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+//求长度
+int getQueueLen(SqQueue qu) 
+{
+	return(qu.rear - qu.front + MAXSIZE) % MAXSIZE;
+}
+
+//遍历
+void queueTraverse(SqQueue qu) 
+{
+	int i = qu.front;
+	printf("遍历:\n");
+	while (i != qu.rear) 
+	{
+		printf("%d", qu.data[i]);
+		i = (i + 1) % MAXSIZE;
+	}
+	printf("\n");
+}
+
+//添加
+void addQueue(SqQueue &qu, int d) 
+{
+	qu.rear = (qu.rear + 1) % 10;
+	qu.data[qu.rear] = d;
+}
+
+//删除
+void deleteQueue(SqQueue& qu) 
+{
+	qu.front = (qu.front + 1) % 10;
+
+}
+
+//查找
+void searchQueue(SqQueue& qu,int a) 
+{
+	printf("请输入查询的数:");
+	scanf_s("%d", &a);
+	int b;
+	b = qu.front;
+	if (a != b)
+		qu.front++;
+	else
+		printf("查询到\n");
+}
+
+//修改
+void changeSqQueue(SqQueue& qu) 
+{
+	int a, b, c;
+	printf("请输入要修改的数：");
+	scanf_s("%d", &a);
+	printf("请输入修改后的数：");
+	scanf_s("%d", &b);
+	c = qu.front;
+	if (c != a)
+		qu.front++;
+	else
+		c = b;
+}
+
+//测试
+int main() 
+{
+	int d;
+	SqQueue qu;
+	printf("进行初始化\n");
+	initQueue(qu);
+	if (queueEmpty(qu) == TRUE)
+		printf("队空\n");
+	else
+		printf("非空\n");
+	printf("入队测试\n");
+	for (int i = 0; i < 10; i++)
+		enQueue(qu, i);
+	queueTraverse(qu);
+	if (isFullQueue(qu) == TRUE)
+		printf("队满\n");
+	else
+		printf("队未满\n");
+	printf("出队\n");
+	int x;
+	printf("出队的是：");
+	for (int i = 0; i < 5; i++) 
+	{
+		deQueue(qu, x);
+		printf("%d", x);
+	}
+	printf("\n");
+	printf("队列的长度为：%d\n", getQueueLen(qu));
+	queueTraverse(qu);
+	scanf_s("%d", &d);
+	addQueue(qu, d);
+	deleteQueue(qu);
+	queueTraverse(qu);
+}
+
+
+//链队列
+typedef struct Node 
+{
+	ElemType data;
+	struct Node* next;
+}LinkNode;
+typedef struct QNode {
+	LinkNode *front;
+	LinkNode* rear;
+}LinkQueue;
+
+//初始化
+void initQueue(LinkQueue& lqu) 
+{
+	lqu.front = lqu.rear = (LinkNode*)malloc(sizeof(LinkNode));
+	lqu.front->next = NULL;
+
+}
+
+//判断队列是否为空
+Status queueEmpty(LinkQueue lqu) 
+{
+	if (lqu.rear == lqu.front)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+//入队
+void enQueue(LinkQueue& lqu, ElemType x) 
+{
+	LinkNode* s = NULL;
+	s = (LinkNode*)malloc(sizeof(LinkNode));
+	s->data = x;
+	s->next = NULL;
+	lqu.rear->next = s;
+	lqu.rear = s;
+}
+
+//出队
+Status deQueue(LinkQueue& lqu, ElemType& x) 
+{
+	LinkNode* p = NULL;
+	if (lqu.front == lqu.rear)
+		return FALSE;
+	p = lqu.front->next;
+	x = p->data;
+	lqu.front->next = p->next;
+	if (lqu.rear == p) 
+		lqu.rear = lqu.front;
+	free(p);
+	return TRUE;
+}
+
+//增加
+void addQueue(LinkQueue& lqu, int a) 
+{
+	LinkNode* p = NULL;
+	p = (LinkNode*)malloc(sizeof(LinkNode));
+	p->data = a;
+	p->next = NULL;
+	lqu.rear->next = p;
+	lqu.rear = p;
+	
+}
+
+//删除
+void deleteQueue(LinkQueue& lqu) 
+{
+	LinkNode* p = lqu.front->next;
+	lqu.front->next = p->next;
+	free(p);
+}
+
+//查找
+void searchQueue(LinkQueue& lqu,int a) 
+{
+	LinkNode* p = lqu.front;
+	while (p->next)
+	{
+		p = p->next;
+		if (p->data == a)
+			printf("查询到结果\n");
+	}
+
+}
+
+//修改
+void changeQueue(LinkQueue& lqu,int a)
+{
+	int b;
+	printf("请输入想修改的数：");
+	scanf_s("%d", &b);
+	printf("请输入修改后的数为:");
+	scanf_s("%d", &a);
+	LinkNode* p = lqu.front->next;
+	while (p != NULL)
+	{
+		if (b != p->data) {
+			p = p->next;
+		}
+		else {
+			p->data = a;
+		}
+	}
+}
+
+//遍历
+void queueTraverse(LinkQueue lqu) 
+{
+	LinkNode* p = lqu.front->next;
+	while(p!=NULL)
+	{
+		printf("%d", p->data);
+		p = p->next;
+	}
+	printf("\n");
+}
+
+//测试
+int main() 
+{
+	LinkQueue lqu;
+	lqu.front = NULL;
+	lqu.rear = NULL;
+	printf("进行初始化\n");
+	initQueue(lqu);
+	if (queueEmpty(lqu) == TRUE)
+		printf("队空\n");
+	else
+		printf("非空\n");
+	printf("入队\n");
+	for (int i = 0; i < 10; i++)
+		enQueue(lqu, i);
+	queueTraverse(lqu);
+	printf("出队\n");
+	int x;
+	printf("出队的是:");
+	for (int i = 0; i < 5; i++) {
+		deQueue(lqu, x);
+		printf("%d", x);
+	}
+	printf("\n");
+	queueTraverse(lqu);
+
+}
