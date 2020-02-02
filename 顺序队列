@@ -1,0 +1,90 @@
+#include<stdio.h>
+ #define MAXSIZE 100                            
+ typedef int QElemType;                        
+ typedef int Status;                            
+#define OK 1                                
+ #define ERROR 0                                
+{
+	 QElemType date[MAXSIZE];                
+     int rear;                               
+ }SqQueue;
+
+ 
+ Status InitQue(SqQueue * Q) {                      
+    Q->front = 0;                            
+    Q->rear = 0;                            
+	return OK;
+ }
+
+ 
+ Status EnQueue(SqQueue * Q, QElemType e)
+ {
+	    if ((Q->rear + 1) % MAXSIZE == Q->front)                
+		         return ERROR;
+	   Q->date[Q->rear] = e;                                
+	     Q->rear = (Q->rear + 1) % MAXSIZE;                    
+     return OK;
+	}
+
+ Status DeQueue(SqQueue * Q, QElemType * e)
+ {
+	     if (Q->front == Q->rear)                                
+		         return ERROR;
+	 * e = Q->date[Q->front];                                
+	     Q->front = (Q->front + 1) % MAXSIZE;               
+	    return OK;
+	 }
+
+ int LengthQue(SqQueue Q)
+ {
+	    return (Q.rear - Q.front + MAXSIZE) % MAXSIZE;
+	 }
+
+ void main()
+ {
+	     SqQueue Q;            
+	     int e;                
+	
+		   while (true)
+	    {
+		        printf("请选择对顺序栈的操作：\n");
+		        printf("1.初始化\n");
+		        printf("2.入队\n");
+		        printf("3.出队\n");
+		        printf("4.队列长度\n");
+		        printf("5.退出\n");
+		        int a;
+		        scanf("%d", &a);
+		        switch (a)
+		         {
+		             case 1:
+			                 if (InitQue(&Q))
+				                    printf("初始化成功\n");
+			                 else
+			                        printf("初始化失败\n");
+		                break;
+	                 case 2:
+			                 printf("请输入入队的元素：");
+			                 scanf("%d", &e);
+			                 if (EnQueue(&Q, e))
+				                     printf("入队成功\n");
+			                 else
+				                     printf("入队失败\n");
+			                 break;
+		             case 3:
+			                 if (DeQueue(&Q, &e))
+				                    printf("出队的元素为：%d\n", e);
+			                 else
+				                     printf("队空\n");
+			                 break;
+		             case 4:
+			                 printf("当前队列长度为：%d\n", LengthQue(Q));
+			                 break;
+		             case 5:
+			                 return;
+		             default:
+			                 printf("选择错误\n");
+			                 break;
+			        }
+	     }
+	 }
