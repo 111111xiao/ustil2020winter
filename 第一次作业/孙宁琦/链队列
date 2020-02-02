@@ -1,0 +1,174 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+typedef struct node {
+	char number[20];
+	struct node* next;
+}Node;
+
+Node* initList() {
+	int i;
+	Node* head = (Node*)malloc(sizeof(Node));
+	head->next = NULL;
+	Node* p = head;
+	for (i = 0; i < 3; i++) {
+		Node* s = (Node*)malloc(sizeof(Node));
+		gets(s->number);
+		p->next = s;
+		p = p->next;
+		s->next = NULL;
+	}
+	return head;
+}
+
+void DisplayList(Node* head) {//遍历
+	Node* p = head;
+	int i = 0;
+	while (p->next) {
+		p = p->next;
+		printf("********************\n");
+		printf("第 %d 个元素\n", i++);
+		puts(p->number);
+	}
+}
+
+void AddNode(Node* head) {//增加
+	Node* p = head;
+	while (p->next)
+		p = p->next;
+	Node* s = (Node*)malloc(sizeof(Node));
+	p->next = s;
+	printf("请输入新元素:\n");
+	gets(s->number);
+	s->next = NULL;
+}
+
+void DeleteNode(Node* head) {//删除
+	Node* p = head;
+	while (p->next->next)
+		p = p->next;
+	free(p->next);
+	p->next = NULL;
+}
+
+int SearchIndex(char number[], Node* head, int* index) {//查找
+	Node* p = head;
+	while (p->next) {
+		p = p->next;
+		(*index)++;
+		if (strcmp(p->number, number) == 0)
+			return 1;
+	}
+	return 0;
+}
+
+void InsertNode(Node* head) {//插入
+	char number[20];
+	int index = 0;
+	Node* p = head;
+
+	printf("请输入您要插入的元素: ");
+	gets(number);
+
+	if (SearchIndex(number, head, &index) == 0)
+		printf("查无此数\n");
+	else {
+		while (index > 0) {
+			index--;
+			p = p->next;
+		}
+
+		Node* s = (Node*)malloc(sizeof(Node));
+		s->next = p->next;
+		p->next = s;
+
+		printf("请输入新联系人的元素: \n");
+		gets(s->number);
+	}
+}
+
+void ChangeNode(Node* head) {//修改
+	char number[20];
+	int index = 0;
+	Node* p = head;
+
+	printf("请输入您要修改的联系人元素: ");
+	gets(number);
+
+	if (SearchIndex(number, head, &index) == 0)
+		printf("查无此数\n");
+	else {
+		while (index > 0) {
+			index--;
+			p = p->next;
+		}
+
+		printf("请输入修改后联系人的元素:\n");
+		gets(p->number);
+	}
+}
+
+void pause() {
+	system("pause");
+	system("cls");
+}
+
+void Selection(int n, Node* head) {
+	switch (n)
+	{
+	case 1:
+		system("cls");
+		AddNode(head);//按1增加
+		break;
+	case 2:
+		system("cls");
+		DeleteNode(head);//按2删除
+		break;
+	case 3:
+		system("cls");
+		ChangeNode(head);//按3修改
+		break;
+	case 4:
+		system("cls");
+		InsertNode(head);//按4插入
+		break;
+	case 5:
+		system("cls");
+		DisplayList(head);//按5遍历
+		break;
+	case 6:
+		break;//按6关闭
+	default:
+		printf("请正确输入操作指令\n");
+		break;
+	}
+}
+
+void UserInterface() {
+	printf("请输入按键执行的操作 : \n");
+	printf("输入 1 进行 增加 操作 : \n");
+	printf("输入 2 进行 删除 操作 : \n");
+	printf("输入 3 进行 修改 操作 : \n");
+	printf("输入 4 进行 插入 操作 : \n");
+	printf("输入 5 进行 遍历 操作 : \n");
+	printf("输入 6 关闭程序 : \n");
+}
+
+void List() {
+	int n;
+	Node* head = initList();//创建
+	UserInterface();
+	while (~scanf_s("%d", &n)) {
+		getchar();
+		if (6 == n)
+			break;
+		Selection(n, head);
+		pause();
+		UserInterface();
+	}
+}
+
+int main() {
+	List();
+	return 0;
+}
