@@ -1,0 +1,152 @@
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#define N 30
+int Search(int line[], int num, int length);//传入数组，需要查找的元素，数组长度
+int Delete(int line[], int num, int length);//传入数组，需要删除的元素位置，数组长度
+int Insert(int line[], int num, int length, int place);//传入数组，需要插入的数值，数组长度，插入位置
+int Alter(int line[], int num, int length, int place);//传入数组，需要修改为的数值，数组长度，修改位置
+void ReadLine(int line[], int length);//读取输入
+void PrintLine(int line[], int length);
+
+int main()
+{
+    int n, m, num;
+    int line[N];
+    int length, place;
+    while (1) {
+        printf("你需要执行的功能：\n1:删除一个元素\n2.查找一个元素\n3.输入数组元素\n4.查看数组元素\n5.插入一个元素\n6.修改数组中的元素\n");
+        scanf("%d", &n);
+        switch (n) {
+        case 1:
+            printf("输入你需要删除的元素坐标\n");
+            scanf("%d", &num);
+            printf("\n");
+            m = Delete(line, num, length);
+            if (m != 2) {
+                printf("success\n");
+                length = length - 1;
+            }
+            else {
+                printf("false\n");
+            }
+            break;
+        case 2:
+            printf("输入需要查找的元素\n");
+            scanf("%d", &num);
+            m = Search(line, num, length);
+            if (m < 0) {
+                printf("false!", m);
+            }
+            else {
+                printf("%d\n", m);
+            }
+            break;
+        case 3:
+            printf("输入数组长度\n");
+            scanf("%d", &length);
+            ReadLine(line, length);
+            break;
+        case 4:
+            PrintLine(line, length);
+            break;
+        case 5:
+            printf("输入您需要插入的位置\n");
+            scanf("%d", &place);
+            printf("输入您需要在该位置插入的元素\n");
+            scanf("%d", &num);
+            m = Insert(line, num, length, place);
+            if (m >= 0) {
+                printf("插入成功\n");
+            }
+            else {
+                printf("插入失败\n");
+            }
+            length = length + 1;
+            break;
+        case 6:
+            printf("输入你需要修改的元素位置\n");
+            scanf("%d", &place);
+            printf("输入用来替换该位置的元素\n");
+            scanf("%d", &num);
+            m = Alter(line, num, length, place);
+            if (m >= 0) {
+                printf("修改成功\n");
+            }
+            else {
+                printf("修改失败\n");
+            }
+            break;
+        default:
+            printf("输入错误，重启程序!\n");
+            return 0;
+        }
+    }
+}
+
+int Alter(int line[], int num, int length, int place) {
+    if (num<1 || num>length + 1) {
+        return -1;
+    }
+    else {
+        line[place] = num;
+        return 1;
+    }
+}
+
+int Delete(int line[], int num, int length) {
+    if (num<0 || num>length) {
+        return 2;
+    }
+    else {
+        int j;
+        for (j = num; j <= length - 1; j++) {
+            line[j - 1] = line[j];
+        }
+        return 1;
+    }
+}
+
+int Insert(int line[], int num, int length, int place) {
+    if (num<1 || num>length + 1) {
+        return -1;
+    }
+    else {
+        int j;
+        for (j = length - 1; j >= place - 1; j--) {
+            line[j + 1] = line[j];
+        }
+        line[place - 1] = num;
+        return 1;
+    }
+}
+
+void ReadLine(int line[], int length) {
+    int i;
+    for (i = 0; i < length; i++) {
+        printf("输入数组元素\n");
+        scanf("%d", &line[i]);
+    }
+}
+int Search(int line[], int num, int length) {
+    int i;
+    for (i = 0; i <= length; i++) {
+        if (line[i] == num) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void PrintLine(int line[], int length) {
+    int i;
+    if (length >= N) {
+        printf("没有数组,请创建数组\n");
+    }
+    else {
+        for (i = 0; i < length; i++) {
+            printf("%3d", line[i]);
+        }
+        printf("\n");
+    }
+}
