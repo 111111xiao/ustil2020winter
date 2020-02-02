@@ -1,0 +1,256 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define N 100
+#define datatype char
+struct queue {
+	datatype data[N];
+	int front;
+	int rear;
+};
+typedef struct queue QUEUE;
+
+void initQUEUE(QUEUE* sq);
+int isempty(QUEUE* sq);
+datatype gethead(QUEUE* sq);
+void enQUEUE(QUEUE* sq, datatype data);
+datatype deQUEUE(QUEUE* sq);
+void showQUEUE(QUEUE* sq);
+
+void initQUEUE(QUEUE* sq) {
+	sq->front = sq->rear;
+}
+int isempty(QUEUE* sq) {
+	
+		if (sq->front = sq->rear) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+datatype gethead(QUEUE* sq) {
+	if (sq->front = sq->rear) {
+		return -1;
+	}
+	return sq->data[sq->front];
+}
+void enQUEUE(QUEUE* sq, datatype data) {
+	if (sq->rear == N) {
+		printf("队列已满");
+		return;
+	}
+	sq->data[sq->rear] = data;
+	sq->rear++;
+}
+datatype deQUEUE(QUEUE* sq) {
+	if (sq->front = sq->rear) {
+		return -1;
+	}
+	sq->front++;
+	return sq->data[sq->front - 1];
+}
+void showQUEUE(QUEUE* sq) {
+	if (sq->front = sq->rear) {
+		return ;
+	}
+	else {
+		for (int i = sq->front; i < sq->rear; i++) {
+			printf("%c ", sq->data[i]);
+		}
+	}
+}
+void main() {
+	QUEUE q1;
+	initQUEUE(&q1);
+	char* str = "abc";
+	char* p = str;
+	while (*p != '\0')
+	{
+		enQUEUE(&q1, *p);
+		showQUEUE(&q1);
+		p++;
+	}
+	while (isempty(&q1) != 1) {
+		printf("%c", deQUEUE(&q1));
+		showQUEUQ(&q1);
+	}
+
+
+	system("pause");}
+  
+  
+  
+  
+  
+ #include<stdio.h>
+#include<stdlib.h>
+struct Node {
+	int data;
+	struct Node* next;
+};
+struct Node* creatNode(int data) {
+	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+	newNode->data = data;
+	newNode->next = NULL;
+	return newNode;
+}
+struct Queue {
+	struct Node* frontNode;
+	struct Node* tailNode;
+	int queueSize;
+};
+struct Queue*createQueue() {
+	struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+	queue->frontNode = queue->tailNode = NULL;
+	queue->queueSize = 0;
+	return queue;
+}
+void push(struct Queue* queue, int data)
+{
+	struct Node* newNode = creatNode(data);
+	if (queue->queueSize == 0)
+		queue->frontNode = newNode;
+	else {
+		queue->tailNode->next = newNode;
+		queue->tailNode = newNode;
+		queue->queueSize++;
+	}
+}
+int front(struct Queue* queue) {
+	if (queue->queueSize == 0)
+	{
+		printf("wufahuoqu");
+		return -1;
+	}
+	return queue->frontNode->data;
+}
+int empty(struct Queue* queue) {
+	return queue->queueSize == 0;
+}
+void pop(struct Queue* queue) {
+	if (queue->queueSize == 0) {
+		printf("队列为空，无法出队");
+		system("pause");
+		exit(0);
+	}
+	struct Node* nextNode = queue->frontNode->next;
+	free(queue->frontNode);
+	queue->frontNode = nextNode;
+	queue->queueSize--;
+
+}
+
+
+
+int main() {
+	struct Queue* myQueue = createQueue();
+	push(myQueue, 1);
+	push(myQueue, 2);
+	push(myQueue, 3);
+	push(myQueue, 4);
+	while (!empty(myQueue)) {
+		printf("%d\t", front(myQueue));
+		pop(myQueue);
+	}
+	printf("\n");
+
+
+	system("pause");
+	return 0;
+}
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct queue {
+	char* buf;
+	int front;
+	int rear;
+	int size;
+} Queue, * pQueue;
+
+void Init_Queue(Queue* q, int maxsize)
+{
+	q->buf = (char*)malloc(sizeof(char) * maxsize);
+	if (q->buf == NULL) {
+		perror("malloc error: ");
+		exit(1);
+	}
+	q->front = 0;
+	q->rear = 0;
+	q->size = maxsize;
+}
+
+void Destroy_Queue(Queue* q)
+{
+	free(q->buf);
+}
+
+void Traverse_Queue(Queue* q)
+{
+	int i = q->front;
+
+	while (i % q->size != q->rear) {
+		printf("buf[%d]: %d\n", i, q->buf[i]);
+		i++;
+	}
+}
+
+bool Queue_Empty(Queue* q)
+{
+	return (q->front == q->rear);
+}
+
+bool Queue_Full(Queue* q)
+{
+	return (q->front == ((q->rear + 1) % q->size));
+}
+
+bool EnQueue(Queue* q, char val)
+{
+	if (!Queue_Full(q)) {
+		*(q->buf + q->rear) = val;
+		q->rear = (q->rear + 1) % q->size;
+		return 1;
+	}
+	printf("Queue Full!\n");
+	return 0;
+}
+
+bool DeQueue(Queue* q, char* val)
+{
+	if (!Queue_Empty(q)) {
+		*val = *(q->buf + q->front);
+		q->front = (q->front + 1) % q->size;
+		return 1;
+	}
+	printf("Queue Empty!\n");
+	return 0;
+}
+
+void main()
+{
+	Queue q;
+	char a;
+
+	Init_Queue(&q, 6);
+
+	printf("Input queue elements: \n");
+	while (!Queue_Full(&q)) {
+		scanf("%d", &a);
+		EnQueue(&q, a);
+	}
+
+	printf("Traverse queue elements: \n");
+	Traverse_Queue(&q);
+
+	printf("Delete queue elements: \n");
+	while (!Queue_Empty(&q)) {
+		DeQueue(&q, &a);
+		printf("%d\n", a);
+	}
+	Destroy_Queue(&q);
+}
