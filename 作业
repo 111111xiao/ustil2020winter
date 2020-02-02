@@ -1,0 +1,317 @@
+//顺序队列
+#include <stdio.h>
+int enQueue(int* a, int rear, int data) {
+    a[rear] = data;
+    rear++;
+    return rear;
+}
+void deQueue(int* a, int front, int rear) {
+    //如果 front==rear，表示队列为空
+    while (front != rear) {
+        printf("出队元素：%d\n", a[front]);
+        front++;
+    }
+}
+int main() {
+    int a[100];
+    int front, rear;
+    //设置队头指针和队尾指针，当队列中没有元素时，队头和队尾指向同一块地址
+    front = rear = 0;
+    //入队
+    rear = enQueue(a, rear, 1);
+    rear = enQueue(a, rear, 2);
+    rear = enQueue(a, rear, 3);
+    rear = enQueue(a, rear, 4);
+    //出队
+    deQueue(a, front, rear);
+    return 0;
+}
+//循环队列
+
+#include <stdio.h>
+#include <malloc.h>
+#include <stdlib.h>
+
+#define true 1
+#define false 0
+#define BUF_SIZE 8
+typedef struct Queue
+{
+    int* BUF;
+    int front;
+    int rear;
+}QUEUE;
+
+void initQueue(QUEUE* queue_q)
+{
+    queue_q->BUF = (int*)malloc(sizeof(int) * BUF_SIZE);
+    if (queue_q->BUF != NULL)     //队列内存分配成功
+    {
+        queue_q->front = queue_q->rear = 0; //初始化头尾指针 
+    }
+
+}
+
+//判空
+unsigned char isemptyQueue(QUEUE* queue_q)
+{
+    if (queue_q->front == queue_q->rear)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+//判满
+unsigned char is_fullQueue(QUEUE* queue_q)
+{
+    if ((queue_q->rear + 1) % BUF_SIZE == queue_q->front)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+//入队
+
+void In_Queue(QUEUE* queue_q, int value)
+{
+    if (is_fullQueue(queue_q) != true)        //队列未满
+    {
+        queue_q->BUF[queue_q->rear] = value;
+        queue_q->rear = (queue_q->rear + 1) % BUF_SIZE;    //尾指针偏移 
+    }
+}
+
+
+//出队 
+void out_Queue(QUEUE* queue_q, int* value)
+{
+    if (isemptyQueue(queue_q) != true)        //队列未空
+    {
+        *value = queue_q->BUF[queue_q->front];
+        queue_q->front = (queue_q->front + 1) % BUF_SIZE;
+    }
+}
+
+void bianli_a(QUEUE* queue_q)
+{
+    if (isemptyQueue(queue_q) != true)
+    {
+        int ret = queue_q->front;
+        while (ret != queue_q->rear)
+        {
+            printf("%d  ", queue_q->BUF[ret]);
+            ret = (ret + 1) % BUF_SIZE;
+        }
+    }
+}
+
+int  main()
+{
+    int val;
+    QUEUE m;
+    initQueue(&m);
+    In_Queue(&m, 1);
+    In_Queue(&m, 2);
+    In_Queue(&m, 3);
+    bianli_a(&m);
+    printf("\n");
+    out_Queue(&m, &val);
+    bianli_a(&m);
+    return 0;
+}
+
+//链式队列
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct QNode{
+    int data;
+    struct QNode * next;
+}QNode;
+QNode * initQueue(){
+    QNode * queue=(QNode*)malloc(sizeof(QNode));
+    queue->next=NULL;
+    return queue;
+}
+QNode* enQueue(QNode * rear,int data){
+    QNode * enElem=(QNode*)malloc(sizeof(QNode));
+    enElem->data=data;
+    enElem->next=NULL;
+    //使用尾插法向链队列中添加数据元素
+    rear->next=enElem;
+    rear=enElem;
+    return rear;
+}
+QNode* DeQueue(QNode * top,QNode * rear){
+    if (top->next==NULL) {
+        printf("\n队列为空");
+        return rear;
+    }
+    QNode * p=top->next;
+    printf("%d ",p->data);
+    top->next=p->next;
+    if (rear==p) {
+        rear=top;
+    }
+    free(p);
+    return rear;
+}
+int main() {
+    QNode * queue,*top,*rear;
+    queue=top=rear=initQueue();//创建头结点
+    //向链队列中添加结点，使用尾插法添加的同时，队尾指针需要指向链表的最后一个元素
+    rear=enQueue(rear, 1);
+    rear=enQueue(rear, 2);
+    rear=enQueue(rear, 3);
+    rear=enQueue(rear, 4);
+    //入队完成，所有数据元素开始出队列
+    rear=DeQueue(top, rear);
+    rear=DeQueue(top, rear);
+    rear=DeQueue(top, rear);
+    rear=DeQueue(top, rear);
+    rear=DeQueue(top, rear);
+    return 0;
+}
+#include <stdio.h>
+#include <stdlib.h>
+#define N 30
+int Search(int line[],int num,int length);//传入数组，需要查找的元素，数组长度，
+int Delete(int line[],int num,int length);//传入数组，需要删除的元素位置，数组长度
+int Insert(int line[],int num,int length,int place);//传入数组，需要插入的数值，数组长度，插入位置
+int Alter(int line[],int num,int length,int place);//传入数组，需要修改为的值，数组长度，修改的位置
+void ReadLine(int line[],int length);//读取输入
+void PrintLine(int line[],int length);//打印数组
+int main()
+{
+    int n,m,num;
+    int line[N];
+    int length,place;
+    while(1){
+        printf("你需要执行的功能：\n1:删除一个元素\n2.查找一个元素\n3.输入数组元素\n4.查看数组元素\n5.插入一个元素\n6.修改数组中的元素\n");
+        scanf("%d",&n);
+        switch(n){
+            case 1:
+                printf("输入你需要删除的元素坐标\n");
+                scanf("%d",&num);
+                printf("\n");
+                m=Delete(line,num,length);
+                if(m!=2){
+                    printf("success\n");
+                    length=length-1;
+                }else{
+                    printf("false\n");
+                }
+                break;
+            case 2:
+                printf("输入需要查找的元素\n");
+                scanf("%d",&num);
+                m=Search(line,num,length);
+                if(m<0){
+                    printf("false!",m);
+                }else{
+                    printf("%d\n",m);
+                }
+                break;
+            case 3:
+                printf("输入数组长度\n");
+                scanf("%d",&length);
+                ReadLine(line,length);
+                break;
+            case 4:
+                PrintLine(line,length);
+                break;
+            case 5:
+                printf("输入您需要插入的位置\n");
+                scanf("%d",&place);
+                printf("输入您需要在该位置插入的元素");
+                scanf("%d",&num);
+                m=Insert(line,num,length,place);
+                if(m>=0){
+                    printf("插入成功\n");
+                }else{
+                    printf("插入失败\n");
+                }
+                length=length+1;
+                break;
+            case 6:
+                printf("输入你需要修改的元素位置\n");
+                scanf("%d",&place);
+                printf("输入用来替换该位置的元素\n");
+                scanf("%d",&num);
+                m=Alter(line,num,length,place);
+                if(m>=0){
+                    printf("修改成功\n");
+                }else{
+                    printf("修改失败\n");
+                }
+                break;
+            default:
+                printf("输入错误，请重启程序!\n");
+                return 0;
+
+        }
+    }
+}
+int Alter(int line[],int num,int length,int place){
+    if(num<1||num>length+1){
+        return -1;
+    }else{
+        line[place]=num;
+        return 1;
+    }
+}
+int Delete(int line[],int num,int length){
+    if(num<0||num>length){
+        return 2;
+    }else{
+        int j;
+        for(j=num;j<=length-1;j++){
+            line[j-1]=line[j];
+        }
+        return 1;
+    }
+}
+int Insert(int line[],int num,int length,int place){
+    if(num<1||num>length+1){
+        return -1;
+    }else{
+        int j;
+        for(j=length-1;j>=place-1;j--){
+            line[j+1]=line[j];
+        }
+        line[place-1]=num;
+        return 1;
+    }
+}
+void ReadLine(int line[],int length){
+    int i;
+    for(i=0;i<length;i++){
+        printf("输入数组元素\n");
+        scanf("%d",&line[i]);
+    }
+
+}
+int Search(int line[],int num,int length){
+    int i;
+    for(i=0;i<=length;i++){
+        if(line[i]==num){
+            return i;
+        }
+    }
+    return -1;
+}
+void PrintLine(int line[],int length){
+    int i;
+    if(length>=N){
+        printf("没有数组,请创建数组\n");
+    }else{
+        for(i=0;i<length;i++){
+            printf("%3d",line[i]);
+        }
+        printf("\n");
+    }
+
+}
