@@ -1,0 +1,176 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define N 100
+
+typedef int datatype;
+void Createqueues(datatype* queues)
+{//创建队列
+int len;//长度
+int value;//元素
+printf("请输入队列大小");
+scanf_s("%d", &len);
+for (int count = 0; count < len; count++)
+{
+printf("队列的第%d个元素是：",count + 1);
+scanf_s("%d", &value);
+queues[count] = value;
+}
+printf("创建成功\n");
+}
+int Lengthqueues(datatype* queues)
+{
+int i = 0, length = 0;
+while (queues[i] != 0)
+{
+length++;
+i++;
+}
+return (length);
+}
+
+void Traversequeues(datatype* queues)
+{//遍历
+int len, count;
+len = Lengthqueues(queues);
+printf("队列是:");
+for (count = 0; count < len; count++)
+printf("%d\n", queues[count]);
+}
+
+void Increasedqueues(datatype* queues)
+{//在任意位置增加
+int  a , count;
+int i, j;
+int* len;
+a = Lengthqueues(queues);
+len = &a;
+printf("请输入插入元素的位置是：");
+scanf_s("%d", &i);
+i -= 1;
+printf("输入插入的元素是：");
+scanf_s("%d", &j);
+if (i > * len || i < 0)
+printf("容量小，数据溢出，请扩大容量");
+else if (i == *len)
+queues[i] = j;
+else
+{
+for (count = *len - 1; count >= i; count--)
+queues[count + 1] = queues[count];
+queues[i] = j;
+}
+*len = *len + 1;
+printf("插入完成!\n");
+for (count = 0; count <* len; count++)
+printf("%d\n", queues[count]);
+}
+void Deletequeues(datatype* queues)
+{//在任意位置删除
+int Loc, count = 0, a,j;
+int* len;
+printf("输入想要删除的元素是:");
+scanf_s("%d", &j);
+a = Lengthqueues(queues);
+len = &a;
+while (queues[count] != j && count < *len)
+count++;
+if (count == *len)
+printf("队列中没有该元素\n");
+else
+{
+Loc = count;//记录元素在队列的位置
+for (count = Loc; count < *len; count++)
+queues[count] = queues[count + 1];
+*len = *len - 1;
+printf("已删除在原队列第%d位元素\n", Loc + 1);
+}
+for (count = 0; count <* len; count++)
+printf("%d\n", queues[count]);
+}
+void Alterqueues(datatype* queues)
+{//修改
+int count = 0, len, j, value;
+len = Lengthqueues(queues);    
+printf("输入修改的元素为:");
+scanf_s("%d", &j);
+printf("请输入想要修改为:");
+scanf_s("%d", &value);
+while (queues[count] != j && count < len)//判断数组中是否能找到该元素
+count++;
+if (count == len)//未找到该元素
+printf("数组中无此元素,无法修改!\n");
+else          
+{ //返回元素的相对位置
+queues[count] = value;
+printf("修改成功\n");
+}
+for (count = 0; count < len; count++)
+printf("%d\n", queues[count]);
+}
+int Findqueues(datatype* queues)
+{//查找
+int count = 0, len,j;
+len = Lengthqueues(queues);//求队列大小
+printf("输入查找的元素为:");
+scanf_s("%d", &j);
+while (queues[count] != j && count < len)//判断数组中是否能找到该元素
+count++;
+if (count == len)//未找到该元素
+printf("队列中无此元素!\n");
+else//返回元素的相对位置
+printf("查找成功该元素在队列中的位置为:%d\n", count + 1);
+for (count = 0; count < len; count++)
+printf("%d\n", queues[count]);
+return 0;
+}
+int main()
+{
+datatype queues[N] = { 0 };
+int input;
+printf("创建队列!\n");
+Createqueues(queues);//调用CreateLink函数
+printf("队列创建完成!\n");
+system("pause");//暂停
+system("cls");//清屏
+printf("选择你需要的操作是 ：\n");
+printf("1.遍历 2.增加 3.删除 4.查找 5.修改 6.退出\n");
+while (1)
+{
+scanf_s("%d", &input);
+switch (input)
+{
+case 1:
+Traversequeues(queues);
+break;
+case 2:
+Increasedqueues(queues);
+break;
+case 3:
+Deletequeues(queues);
+break;
+case 4:
+Findqueues(queues);
+break;
+case 5:
+Alterqueues(queues);
+break;
+case 6:
+printf("谢谢使用\n");
+break;
+default:
+printf("input error!\n");
+break;
+}
+
+}
+return 0;
+}
+
+
+
+
+
+
+
+
+
