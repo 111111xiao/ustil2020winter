@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+#define ElemType int
+#pragma warning(disable : 4996)
+
+typedef struct
+{
+    ElemType* data;//指向data的指针
+    int front, rear, len, size;
+    int seek;//用于搜索队列元素
+}SeqQueue, * pSeqQueue;
+
+void SeqQueueCreate(pSeqQueue que, ElemType n)//初始化栈
+{
+    que->data = (ElemType*)malloc(n + 1);//动态分配
+    if (que->data == NULL) { printf("分配内存失败"); }
+    que->front = que->rear = 0;//栈空
+    que->len = 0;
+    que->size = n + 1;
+    que->seek = 0;
+}
+
+void SeqQueueIn(pSeqQueue que, ElemType x)
+{
+
+    if (que->len < que->size - 1)
+    {
+        que->data[que->rear] = x;
+        printf("队列总共可存储元素个数：%d\n当前队列元素个数：%d\n已经存储元素： %d\n", que->size, que->len, que->data[que->rear]);
+        que->rear = (que->rear++) % que->size;
+        que->len++;
+    }
+    else
+    {
+        printf("栈满\n");
+    }
+}
+
+void SeqQueueOut(pSeqQueue que)
+{
+    while (que->front < que->rear)
+    {
+        printf("出队元素为：%d\n", que->data[que->front]);
+        que->front = (que->front++) % que->size;
+    }
+}
+
+void SeekQueueOut(pSeqQueue que, ElemType m)//搜索元素
+{
+
+    while (que->seek < que->rear)
+    {
+        if (que->data[que->seek] == m)
+        {
+            printf("成功找到元素为：%d\n", que->data[que->seek]);
+            break;
+        }
+        else
+        {
+            que->seek++;
+        }
+    }
+}
+
+SeqQueue ss;
+int m, n;
+
+int main()
+{
+    printf("请输入入队元素个数：\n");
+    scanf("%d", &n);
+    SeqQueueCreate(&ss, n);
+    for (int i = 1; i < n + 2; i++)
+    {
+        printf("请输入第 %d 个元素：\n", i);
+        scanf("%d", &m);
+        SeqQueueIn(&ss, m);
+    }
+    SeekQueueOut(&ss, 2);
+    SeqQueueOut(&ss);
+    system("pause");
+    return 0;
+}
