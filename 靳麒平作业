@@ -1,0 +1,320 @@
+/*顺序队列*/
+#include<stdio.h>
+#include<stdlib.h>
+#define Max 10
+int max = Max;
+typedef struct
+{
+	int *data;
+	int first, last;
+}List;
+List initList()
+{
+	List l;
+	l.data = (int*)malloc(sizeof(int)*Max);
+	l.first = l.last = 0;
+	return l;
+}
+void in(List *l)
+{
+	int n, i;
+	printf("\n请输入要存储的个数(小于%d)：\n", Max);
+	scanf("%d", &n);
+	if (n < Max) {
+		printf("请输入要存储的数据：\n");
+		for (i = 0; i < n; i++) {
+			scanf("%d", &l->data[l->last]);
+			l->last++;
+		}
+	}
+	else {
+		printf("数据存储空间不足，请重新输入少于%d数量的数据:\n", Max);
+		in(l);
+	}
+}
+void bianli(List *l)
+{
+	int i;
+	printf("\n存入结果为：\n");
+	for (i = l->first; i < l->last; i++)
+		printf("% d", l->data[i]);
+}
+void addList(List *l)
+{
+	int i, j;
+	printf("\n请输入要增加的数量：\n");
+	scanf("%d", &i);
+	if ((l->last + 1) == l->first)
+	{
+		printf("内存已满，请输入要扩容的倍数：\n");
+		scanf("%d", &max);
+		l->data = (int*)realloc(l->data, sizeof(int)*max);
+	}
+	if (l->last + i > max - 1)
+	{
+		printf("内存已满，请输入要扩容的倍数：\n");
+		scanf("%d", &max);
+		l->data = (int*)realloc(l->data, sizeof(int)*max);
+	}
+	printf("您要插入%d个数：\n", i);
+	printf("请输入要插入的值：\n");
+	for (j = 0; j < i; j++)
+	{
+		scanf("%d", &l->data[l->last]);
+		l->last++;
+	}
+	bianli(l);
+}
+int deleteList(List *l)
+{
+	int n;
+	printf("\n请输入要删去的个数：\n");
+	scanf("%d", &n);
+	l->first = (l->first + n);
+	bianli(l);
+	return n;
+}
+void findList(List *l, int n)
+{
+	int i, t;
+	printf("\n请输入要查找的值：\n");
+	scanf("%d", &i);
+	printf("含有此值的位置为：\n");
+	for (t = l->first; t < l->last; t++)
+		if (l->data[t] == i)
+			printf("% d", t - n + 1);
+}
+void changeList(List *l)
+{
+	int i, t;
+	printf("\n请输入要改变的位置：\n");
+	scanf("%d", &i);
+	t = (l->first + i);
+	printf("请输入要改变的值：\n");
+	scanf("%d", &l->data[t - 1]);
+	bianli(l);
+}
+int main()
+{
+	List l = initList();
+	in(&l);
+	bianli(&l);
+	addList(&l);
+	int n = deleteList(&l);
+	findList(&l, n);
+	changeList(&l);
+	return 0;
+}
+/*循环队列
+#include<stdio.h>
+#include<stdlib.h>
+#define Max 10
+typedef struct
+{
+	int *data;
+	int first, last;
+}List;
+List initList()
+{
+	List l;
+	l.data = (int*)malloc(sizeof(int)*Max);
+	l.first = l.last = 0;
+	return l;
+}
+int in(List *l)
+{
+	int n, i;
+	printf("\n请输入要存储的个数(小于%d)：\n", Max);
+	scanf("%d", &n);
+	if (n < Max) {
+		printf("请输入要存储的数据：\n");
+		for (i = 0; i < n; i++) {
+			scanf("%d", &l->data[l->last]);
+			l->last = (l->last + 1) % Max;
+		}
+	}
+	else {
+		printf("数据存储空间不足，请重新输入少于%d数量的数据:\n", Max);
+		in(l);
+	}
+	return n;
+}
+void bianli(List *l)
+{
+	int i;
+	printf("\n存入结果为：\n");
+	for (i = l->first; i < l->last; i++)
+		printf("% d", l->data[i]);
+}
+void deleteList(List *l)
+{
+	int n;
+	printf("\n请输入要删去的个数：\n");
+	scanf("%d", &n);
+	l->first = (l->first + n) % Max;
+	bianli(l);
+}
+int addList(List *l, int m)
+{
+	int n, i, t, j;
+	printf("\n请输入要增加的个数小于%d位：\n", Max - m - 1);
+	scanf("%d", &n);
+	printf("请输入：\n");
+	for (i = 0; i < n; i++)
+	{
+		t = l->last;
+		scanf("%d", &l->data[t]);
+		l->last = (l->last + 1) % Max;
+	}
+	bianli(l);
+}
+void findList(List *l)
+{
+	int n, j;
+	printf("\n请输入要查找的值：\n");
+	scanf("%d", &n);
+	printf("含有目标值的位置：\n");
+	for (j = l->first; j < l->last; j = (j + 1) % Max)
+	{
+		if (l->data[j] == n)
+			printf("% d", j);
+	}
+}
+void changeList(List *l)
+{
+	int n, t, i;
+	printf("\n请输入要改变的位置：\n");
+	scanf("%d", &n);
+	printf("请输入要改变的值：\n");
+	scanf("%d", &i);
+	t = (l->first + n - 1);
+	l->data[t] = i;
+	bianli(l);
+}
+int main()
+{
+	List l = initList();
+	int t = in(&l);
+	bianli(&l);
+	deleteList(&l);
+	addList(&l, t);
+	findList(&l);
+	changeList(&l);
+	return 0;
+}*/
+/*链队列*/
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct LNode
+{
+	int data;
+	struct LNode *Next;
+}LNode, *Node;
+typedef struct list
+{
+	Node first, last;
+}List, *list;
+void initlist(list l)
+{
+	l->first = l->last = (Node)malloc(sizeof(LNode));
+	l->first->Next = l->last;
+	int i,t;
+	printf("请输入要创建的个数\n");
+	scanf("%d", &i);
+	printf("请输入%d个要存储的数据\n",i);
+		for (t = 0; t < i; t++)
+		{
+			Node k = NULL;
+			k= (Node)malloc(sizeof(LNode));
+			scanf("%d", &k->data);
+			l->last->Next = k;
+			k->Next = NULL;
+			l->last=k;
+		}
+}
+void bianli(list l)
+{
+    printf("结果为\n");
+	Node p ;
+	p = l->first->Next;
+	while (p!=NULL)
+	{
+		printf("% d", p->data);
+		p = p->Next;
+	}
+ }
+void addlist(list l)
+{
+    int n,t;
+printf("\n请输入要加入的个数：\n");
+scanf("%d",&n);
+printf("请输入要存储的值：\n");
+for(t=0;t<n;t++)
+{
+    Node  k;
+    k=(Node)malloc(sizeof(LNode));
+			scanf("%d", &k->data);
+			l->last->Next = k;
+			k->Next = NULL;
+			l->last=k;
+
+}
+bianli(l);
+}
+void deletelist(list l)
+{
+    int n,t;
+    printf("\n请输入要删除的个数\n");
+    scanf("%d",&n);
+    Node p ;
+	p = l->first->Next;
+	for(t=0;t<n;t++)
+        p=p->Next;
+        l->first->Next=p;
+        bianli(l);
+}
+void findlist(list l)
+{
+    int n;
+    printf("\n请输入要查找的值：\n");
+    scanf("%d",&n);
+     Node p ;
+     int i=1;
+	p = l->first->Next;
+	printf("结果为\n");
+    while(p)
+    {
+      if(p->data==n)
+            printf("% d",i);
+            p=p->Next;
+      i++;
+    }
+}
+void changelist(list l)
+{
+    int i,n,t;
+    printf("\n请输入要改变的位置：\n");
+    scanf("%d",&n);
+     Node p ;
+	p = l->first->Next;
+	for(t=0;t<n-1;t++)
+        p=p->Next;
+        printf("请输入要改变的值：\n");
+        scanf("%d",&i);
+        p->data=i;
+        bianli(l);
+}
+int main()
+{
+	List l;
+	l.first = NULL;
+	l.last = NULL;
+	initlist(&l);
+	bianli(&l);
+	addlist(&l);
+	deletelist(&l);
+   findlist(&l);
+   changelist(&l);
+	return 0;
+}
+
