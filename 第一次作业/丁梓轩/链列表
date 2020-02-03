@@ -1,0 +1,152 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define Empty 0        /* 队列为空 */
+#define NoEmpty 1    /* 队列不为空*/
+
+typedef struct QNode    /* 声明链式队列的结点 */
+{
+	int data;
+	struct QNode* next;
+}Node;
+typedef struct QueuePoint    /* 声明链式队列的首尾指针 */
+{
+	Node* front;
+	Node* rear;
+	int length; /* 记录链式队列长度 */
+}Queue;
+
+void DisplyNode(Queue p);        /* 打印队列 */
+Queue init(Queue p);            /* 初始化队列 */
+Queue AppendNode(Queue p);        /* 入队 */
+Queue DeletNode(Queue p);        /* 出队 */
+int IsemptyQueue(Queue p);        /* 判断队列是否为空*/
+main()
+{
+	int i = 0;
+	char c;
+	Queue q;    //链式队列首尾指针 和 长度
+
+	q.front = q.rear = NULL;    /* 首尾指针初始化 */
+	q.length = 0;                /* 链式队列长度初始化 */
+	q = init(q);                /* 初始化队列 */
+	printf("Do you want to append a new node(Y/N)?");
+	scanf_s(" %c", &c);
+	while (c == 'Y' || c == 'y')
+	{
+		q = AppendNode(q);    /* 入队 */
+		DisplyNode(q);        /* 按先进先出对队列进行打印 */
+		printf("Do you want to append a new node(Y/N)?");
+		scanf_s(" %c", &c);
+	}
+	printf("Do you want to delete node(Y/N)?");
+	scanf_s(" %c", &c);
+	while (c == 'Y' || c == 'y')
+	{
+		q = DeletNode(q);    /* 出队 */
+		DisplyNode(q);        /* 按先进先出对队列进行打印 */
+		printf("Do you want to delete node(Y/N)?");
+		scanf_s(" %c", &c);
+	}
+
+	return 0;
+}
+int IsemptyQueue(Queue p)
+{
+	if (p.front == p.rear)    /* 队首指针和队尾指针重合队列为空 */
+	{
+		return Empty;
+	}
+	else
+	{
+		return NoEmpty;
+	}
+}
+Queue DeletNode(Queue p)
+{
+	Node* del;
+
+	if (IsemptyQueue(p) == Empty)        /* 判断队列是否为空*/
+	{
+		printf("队列为空,无法出队 ");
+		return p;
+	}
+	else        /* 队列不为空 */
+	{
+		if (p.front->next == p.rear)    /* 如果出队的节点为最后一个节点 */
+		{
+			printf("出队节点的数据为%d----", p.rear->data);
+			free(p.rear);    /* 释放最后一一个节点*/
+			p.rear = p.front;        /* 队首指针和队尾指针都指向头节点 */
+			p.front->next = NULL;
+			p.length--;
+		}
+		else
+		{
+			del = p.front->next;
+			printf("出队节点的数据为%d----", del->data);
+			p.front->next = p.front->next->next; /* 使头节点的指针域指向出队节点的下一个节点 */
+			free(del);        /* 释放出队的节点 */
+			p.length--;
+		}
+
+		return p;
+	}
+}
+//函数功能：初始化队列（其实就是搞个头结点放在队列里面）
+//单独弄个子函数来初始化队列是为了方便入队的时候判断队列是否为空 
+Queue init(Queue p)
+{
+	p.front = p.rear = (Node*)malloc(sizeof(Node));
+	if (p.front == NULL && p.rear == NULL)
+	{
+		printf("initialization failed");
+		exit(0);
+	}
+	p.front->next = NULL;
+
+	return p;
+}
+//函数功能：新建节点并添加到队列中，记录队列长度
+Queue AppendNode(Queue p)
+{
+	int data;
+	Node* q;
+
+	q = (Node*)malloc(sizeof(Node));
+	if (q == NULL)    /* 判断分配内存是否失败 */
+	{
+		printf("No enough memory to allocate");
+		exit(0);
+	}
+	p.rear->next = q;        /* 最后一个节点的指针指向新建节点*/
+	p.rear = q;                /* 队尾指针指向新建节点*/
+
+	printf("Input node data\n");
+	scanf("%d", &data);
+	p.rear->data = data;
+	p.rear->next = NULL;
+	p.length++;
+	return p;
+
+}
+//函数功能：按照先进先出原则对队列进行打印
+void DisplyNode(Queue p)
+{
+	if (IsemptyQueue(p) == Empty)
+	{
+		printf("队列为空，无法打印\n");
+	}
+	else
+	{
+		p.front = p.front->next;
+		printf("当前队列中的%d个节点[", p.length);
+		while (p.front != NULL)
+		{
+			printf("%d->", p.front->data);
+			p.front = p.front->next;
+		}
+		putchar(']');
+		putchar('\n');
+	}
+}
