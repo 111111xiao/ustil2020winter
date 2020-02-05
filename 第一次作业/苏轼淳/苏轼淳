@@ -1,0 +1,269 @@
+等级的增删改查
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct grade {//
+	char name[10];
+	char letter[10];
+	struct grade* next;
+}grade;
+
+grade* initList() {
+	int i;
+	grade* head = (grade*)malloc(sizeof(grade));
+	head->next = NULL;
+	grade* p = head;
+
+	for (i = 0; i < 3; i++) {
+		grade* s = (grade*)malloc(sizeof(grade));
+		printf("请输入您要存储的用户名称 : "); gets(s->name);
+		printf("请输入您要存储的等级 : "); gets(s->letter);
+		p->next = s;
+		p = p->next;
+		s->next = NULL;
+	}
+	return head;
+}
+
+void DisplayList(grade* head) {
+	grade* p = head;
+	int i = 0;
+	while (p->next) {
+		p = p->next;
+		printf("********************\n");
+		printf("第 %d 个用户名称  \n", i++);
+		printf("名称 : "); puts(p->name);
+		printf("等级: "); puts(p->letter);
+	}
+}
+
+void Addgrade(grade* head) {
+	grade* p = head;
+	while (p->next)
+		p = p->next;
+	grade* s = (grade*)malloc(sizeof(grade));
+	p->next = s;
+	printf("请输入新的用户名称: \n");
+	printf("名称 : "); gets(s->name);
+	printf("等级 : "); gets(s->letter);
+	s->next = NULL;
+}
+
+void Deletegrade(grade* head) {
+	grade* p = head;
+	while (p->next->next)
+		p = p->next;
+	free(p->next);
+	p->next = NULL;
+}
+
+int SearchIndex(char name[], grade* head, int* index) {
+	grade* p = head;
+	while (p->next) {
+		p = p->next;
+		(*index)++;
+		if (strcmp(p->name, name) == 0)
+			return 1;
+	}
+	return 0;
+}
+
+void Insertgrade(grade* head) {
+
+	char name[20];
+	int index = 0;
+	grade* p = head;
+
+	printf("请输入您要插入的用户名称 : ");
+	gets(name);
+
+		while (index > 0) {
+			index--;
+			p = p->next;
+
+
+		grade* s = (grade*)malloc(sizeof(grade));
+		s->next = p->next;
+		p->next = s;
+
+		printf("请输入新的用户名称: \n");
+		printf("名称 : "); gets(s->name);
+		printf("等级 : "); gets(s->letter);
+	}
+}
+
+void Changegrade(grade* head) {
+	char name[20];
+	int index = 0;
+	grade* p = head;
+
+	printf("请输入您要修改的名称 : ");
+	gets(name);
+
+
+		while (index > 0) {
+			index--;
+			p = p->next;
+
+
+		printf("请输入修改后名称: \n");
+		printf("名称 : "); gets(p->name);
+		printf("等级 : "); gets(p->letter);
+	}
+}
+
+void pause() {
+	system("pause");
+	system("cls");
+}
+
+void Selection(int n, grade* head) {
+	switch (n)
+	{
+	case 1:
+		system("cls");
+		Addgrade(head);
+		break;
+	case 2:
+		system("cls");
+		Deletegrade(head);
+		break;
+	case 3:
+		system("cls");
+		Changegrade(head);
+		break;
+	case 4:
+		system("cls");
+		Insertgrade(head);
+		break;
+	case 5:
+		system("cls");
+		DisplayList(head);
+		break;
+	case 6:
+		break;
+	default:
+		printf("请正确输入操作指令\n");
+		break;
+	}
+}
+
+void UserInterface() {
+	printf("请输入按键执行链表的操作 : \n");
+	printf("输入 1 进行 增加 操作 : \n");
+	printf("输入 2 进行 删除 操作 : \n");
+	printf("输入 3 进行 修改 操作 : \n");
+	printf("输入 4 进行 插入 操作 : \n");
+	printf("输入 5 进行 打印 操作 : \n");
+	printf("输入 6 关闭程序 : \n");
+	printf("  等级管理系统 >  ");
+}
+
+void List() {
+	int n;
+	grade* head = initList();//创建链表
+	UserInterface();
+	while (~scanf_s("%d", &n)) {
+		getchar();
+		if (6 == n)
+			break;
+		Selection(n, head);
+		pause();
+		UserInterface();
+	}
+}
+
+int main() {
+	List();
+	return 0;
+}
+循环队列
+
+#include <iostream>
+using namespace std;
+
+#define MAXSIZE 5 //最大队列长度
+
+template<class T>
+class RQueue
+{
+public:
+	RQueue()
+		:_base(NULL)
+		,_front(0)
+		,_rear(0)
+	{
+		_base = (T*) malloc (MAXSIZE*sizeof(T));
+		if(!_base)
+		{
+			cout<<"开辟空间失败"<<endl;
+		}
+	}
+
+	//返回队列元素个数
+	int Length()
+	{
+		return (_rear-_front+MAXSIZE)%MAXSIZE;
+	}
+
+	//插入元素
+	bool Insert(const T& x)
+	{
+		if((_rear+1)%MAXSIZE == _front)//队列满
+		{
+			cout<<"队列已满！"<<endl;
+			return false;
+		}
+
+		_base[_rear] = x;
+		_rear = (_rear+1)%MAXSIZE;
+		return true;
+	}
+
+	//删除元素
+	bool Delete()
+	{
+		if(_front == _rear)
+		{
+			cout<<"队列为空！"<<endl;
+			return false;
+		}
+		_front = (_front+1)%MAXSIZE;
+		return true;
+	}
+
+
+private:
+	T* _base; //初始化的动态分配存储空间
+	int _front;  //头指针，若队列不空，指向队列头元素
+	int _rear;   //尾指针，若队列不空，指向队列尾元素的下一个位置
+};
+顺序队列
+#include <stdio.h>
+int enQueue(int *a,int rear,int data){
+    a[rear]=data;
+    rear++;
+    return rear;
+}
+void deQueue(int *a,int front,int rear){
+    //如果 front==rear，表示队列为空
+    while (front!=rear) {
+        printf("出队元素：%d\n",a[front]);
+        front++;
+    }
+}
+int main() {
+    int a[100];
+    int front,rear;
+    //设置队头指针和队尾指针，当队列中没有元素时，队头和队尾指向同一块地址
+    front=rear=0;
+    //入队
+    rear=enQueue(a, rear, 1);
+    rear=enQueue(a, rear, 2);
+    rear=enQueue(a, rear, 3);
+    rear=enQueue(a, rear, 4);
+    //出队
+    deQueue(a, front, rear);
+    return 0;
