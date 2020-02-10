@@ -1,0 +1,189 @@
+#include<iostream>
+#include<cstring>
+using namespace std;
+class Student {
+public:
+	Student() {                          //构造函数
+		 num = 0;
+	}
+	Student(Student& ojd) {              //拷贝构造函数
+		num=ojd.num;
+		strcpy(name, ojd.name);
+	}
+	~Student() {                         //析构函数
+		
+	}
+	void A(int f,char* g) {              //输入学号姓名
+		strcpy(name, g);
+		num = f;
+    
+	}
+protected:
+	int num;
+	char name[10];
+};
+
+class Score : public Student {            //继承Student类
+public:
+	int _yy() {
+		return english;
+	}
+	int _sx() {
+		return math;
+	}
+	int _jsj() {
+		return computer;
+	}
+	void B(int a,int b,int c) {           //输入成绩
+		english = a;
+		math = b;
+		computer = c;
+		sum++;
+	}
+	Score() {                            //构造函数  
+		computer = 0;
+		math = 0;
+		english = 0;
+	}
+	~Score() {                           //析构函数
+	
+	}
+	double pingjun() {                   //计算成绩平均值
+		double w;
+		w = (english + math + computer) / 3.0;
+		 return w;
+	}
+	 void chaxun() {                     //查询学生信息
+		cout << "学生信息："  << endl;
+		cout << "学生姓名：" << name << endl;
+		cout << "学生学号：" << num << endl;
+		cout << "学生英语成绩：" << english << endl;
+		cout << "学生数学成绩：" << math << endl;
+		cout << "学生计算机成绩：" << computer << endl;
+	}
+	 void xuigai(char *mingz,int xueh,int yingy,int shux,int jisj) {//修改学生信息
+		 strcpy(name, mingz);
+		 num = xueh;
+		 english = yingy;
+		 math = shux;
+		 computer = jisj;
+		 cout << "修改成功" << endl;
+	 }
+
+	 static int summ() {                 //静态成员 求总人数
+		 return sum;
+	 }
+protected:
+	int english;
+	int math;
+	int computer;
+	static int sum;                      //总人数
+};
+int Score::sum = 0;                      //总成绩初始化
+
+
+int main() {                             
+	int i=1;
+	Score sco[10];
+	cout << "本程序最多输入10人" << endl;
+	while (i == 1) {
+		int a;
+		for (a = 0; 1; a++) {
+			cout << "请输入第" << a + 1 << "个学生的信息" << endl;
+			int sx, yy, comp, xh;
+			char mz[20];
+			cout << "姓名:" << endl;        cin >> mz;
+			cout << "学号:" << endl;        cin >> xh;
+			cout << "英语成绩:" << endl;    cin >> yy;
+			cout << "数学成绩:" << endl;    cin >> sx;
+			cout << "计算机成绩:" << endl;  cin >> comp;
+			sco[a].A(xh, mz);
+			sco[a].B(yy, sx, comp);
+			int s;
+			cout << "继续输入请按1，停止请按0" << endl;
+			cin >> s;
+			if (s == 0)
+				break;
+		}
+		break;
+	}
+	while (i == i){
+		cout << "查询请按1，修改请按2，求平均成绩请按3，求总人数请按4，求多个同学某一课成绩请按5，结束按6" << endl;
+		int b;
+		cin >> b;
+		if (b == 1) {
+			cout << "输入要查询的同学序号" << endl;
+			cout << "序号：" << endl;
+			int c;
+			cin >> c;
+			sco[c-1].chaxun();
+		}
+		if (b == 2) {
+			cout << "修改第几个学生的信息" << endl;
+			int p;
+			cin >> p;
+			cout << "请输入新的学生信息" << endl;
+			int aa, bb, cc, dd;
+			char ww[20];
+			cout << "姓名:" << endl;        cin >> ww;
+			cout << "学号:" << endl;        cin >> aa;
+			cout << "英语成绩:" << endl;    cin >> bb;
+			cout << "数学成绩:" << endl;    cin >> cc;
+			cout << "计算机成绩:" << endl;  cin >> dd;
+			sco[p - 1].xuigai(ww, aa, bb, cc, dd);
+			cout << "新学生信息:" << endl;
+			sco[p - 1].chaxun();
+		}
+		if (b == 3) {
+			cout << "请输入要求学生序号" << endl;
+			int t;
+			cin >> t;
+			cout << "该学生成绩平均值：" << (sco[t - 1].pingjun())<< endl;			
+		}
+		if (b == 4) {
+			cout << "总人数为：" << (Score::summ())<<endl;
+		}
+		if (b == 5) {
+			int cj;
+			cout << "求英语平均成绩按1" << endl;
+			cout << "求数学平均成绩按2" << endl;
+			cout << "求计算机平均成绩按3" << endl;
+			cin >> cj;
+			if (cj ==1 ) {
+				int i,j=0;
+				for (i = 0; i < Score::summ(); i++) {
+					j = j + (sco[i]._yy());
+				}
+				double ww;
+				ww= j / (Score::summ());
+				ww= double((int)(ww* 100)) / 100.0;
+				cout << "平均成绩为：" <<ww<<endl;
+			}
+			if (cj == 2) {
+				int i,j=0;
+				for (i = 0; i < Score::summ(); i++) {
+					j = j + (sco[i]._sx());
+				}
+				double ww;
+				ww = j / (Score::summ());
+				ww = double((int)(ww * 100)) / 100.0;
+				cout << "平均成绩为：" << ww << endl;
+			}
+			if (cj == 3) {
+				int i,j=0;
+				for (i = 0; i < Score::summ(); i++) {
+					j = j + (sco[i]._jsj());
+				}
+				double ww;
+				ww = j / (Score::summ());
+				ww = double((int)(ww * 100)) / 100.0;
+				cout << "平均成绩为：" << ww << endl;
+			}
+		}
+		if (b == 6) {
+			break;
+		}
+	}
+	system("pause");
+	return 0;
+}
