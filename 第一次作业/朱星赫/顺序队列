@@ -1,0 +1,192 @@
+循序队列
+#include <stdio.h>
+
+int enQueue(int *a,int rear,int data)
+{
+a[rear]=data;
+rear++;
+return rear;
+}
+
+void deQueue(int *a,int front,int rear)
+{
+while (front!=rear) 
+{
+printf("出队元素：%d\n",a[front]);
+front++;
+}
+}
+
+int main() 
+{
+int a[100];
+int front,rear;
+
+front=rear=0;
+
+rear=enQueue(a, rear, 1);
+
+rear=enQueue(a, rear, 2);
+
+rear=enQueue(a, rear, 3);
+
+rear=enQueue(a, rear, 4);
+
+deQueue(a, front, rear);
+
+return 0;
+}
+顺序队列
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#define max 5
+ 
+typedef struct node
+{
+    int data[max];
+ 
+   int front;
+ 
+   int rear;
+}node,*linklist;
+ 
+
+ 
+void create_queue(linklist *l)
+
+{
+    (*l)=(node*)malloc(sizeof(node));
+ 
+   int i,j,x;
+   
+ printf("please input the length:");
+ 
+   scanf("%d",&j);
+  
+  (*l)->front=0;
+  
+  (*l)->rear=j;
+
+    for(i=0;i<j;i++)
+   
+ {
+        scanf("%d",&x);
+ 
+       (*l)->data[i]=x;
+ 
+    }
+}
+
+ 
+void en_queue(linklist *l)
+
+{
+    int i,j,x;
+  
+  scanf("%d",&x);
+   
+ if(((*l)->rear+1)%max==(*l)->front)
+    exit(-1);
+  
+  (*l)->data[(*l)->rear]=x;
+   
+ (*l)->rear=((*l)->rear+1)%max;
+
+}
+ 
+void de_queue(linklist *l)
+{
+    int x;
+    x=(*l)->data[(*l)->front];
+  
+  (*l)->front=((*l)->front+1)%max;
+}
+
+ 
+void print_queue(linklist *l)
+
+{
+    int i,j,x;
+    
+if((*l)->rear>(*l)->front)
+ 
+   {
+        for(i=(*l)->front;i<(*l)->rear;i++)
+   
+     printf("%4d",(*l)->data[i]);
+    }
+   
+ else
+    {
+        for(i=(*l)->front;i<max;i++)
+   
+     {
+            printf("%4d",(*l)->data[i]);
+        }
+  
+      for(j=0;j<(*l)->rear;j++)
+   
+     {
+            printf("%4d",(*l)->data[j]);
+        }
+ 
+    }
+}
+
+ 
+int main()
+{
+    linklist a;
+  
+  create_queue(&a);
+   
+ de_queue(&a);
+  
+  de_queue(&a);
+ 
+   en_queue(&a);
+  
+  en_queue(&a);
+ 
+   print_queue(&a);
+
+    return 0;
+}
+链式队列
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <stdbool.h>
+
+ 
+typedef int datatype;   
+ 
+
+typedef struct linkqueuenode{     ）
+
+	datatype data;                 
+	struct linkqueuenode *next;      	
+
+}linkqueue_node,*linkqueue_pnode;    
+
+ 
+typedef struct linkqueue{           
+linkqueue_pnode front,rear;
+}
+link_queue,*link_pqueue;
+ 
+
+extern void init_linkqueue(link_pqueue *Q);          
+extern bool is_empty_linkqueue(link_pqueue q);           
+ 
+extern bool in_linkqueue(datatype data,link_pqueue q);      
+
+extern bool out_linkqueue(link_pqueue q,datatype *D);     
+
+extern void show_linkqueue(link_pqueue q);            
+
+extern void free_linkqueue(link_pqueue q);
