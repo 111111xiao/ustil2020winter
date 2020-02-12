@@ -1,0 +1,199 @@
+#include<iostream>
+#include<cstdio>
+using namespace std;
+class score
+{
+public:
+	int math;
+	int English;
+	int TC;
+	double averscore;
+public:
+	score(int math, int English, int TC);
+	score(){}
+	score(const score &h);
+};
+score::score(int math, int English, int TC)
+{
+	this->math = math;
+	this->English = English;
+	this->TC = TC;
+}
+score::score(const score &h)
+{
+    this->English=h.English;
+    this->math=h.math;
+    this->TC=h.TC;
+    this->averscore=h.averscore;
+}
+void aver(score m)
+{
+    m.averscore=((m.English+m.math+m.TC)/3.0);
+    cout<<" 平均成绩："<< m.averscore <<endl;
+}
+class student
+{
+private:
+	string name;
+	int num;
+	score grade;
+	static int age;
+public:
+	student(string name, int num,score t)
+	{
+		this->name = name;
+		this->num = num;
+		this->grade = t;
+	}
+	void show();
+};
+int student::age=19;
+void student::show()
+{
+	cout<<"\n姓名："<< name <<" 年龄: "<< age <<" 学号："<< num <<" 数学成绩："<< grade.math <<" 英语成绩: "<< grade.English <<" 计算机成绩: "<< grade.TC ;
+}
+void print(int i,string *name,int *num,int *math,int *English,int *TC)
+{
+    int t;
+    for (t = 0; t < i; t++)
+	{
+		score t1(math[t], English[t], TC[t]);
+		student d1(name[t], num[t], t1);
+		d1.show();
+		aver(t1);
+	}
+}
+void aversubject(int i,int *math,int *English,int *TC )
+{
+  int math1=0,English1=0,TC1=0,t;
+   for(t=0;t<i;t++)
+    {
+     math1=math1+math[t];
+     English1=English1+English[t];
+     TC1=TC1+TC[t];
+    }
+    cout<<endl<<"数学平均分: "<< (double)math1/i <<" 英语平均分： "<< (double)English1/i <<" 计算机平均分： "<< (double)TC1/i<<endl;
+}
+int main()
+{
+	int  num[50], math[50], English[50], TC[50],i,t,j,k,subject,right;
+	string name[100];
+	while(~printf("\n请输入要存储的整体数据个数：\n")){
+	scanf("%d", &i);
+	printf("\n请输入学生的具体信息：姓名、学号、数学成绩、英语成绩、计算机成绩\n");
+	for (t = 0; t < i; t++)
+		cin>>name[t]>>num[t]>>math[t]>>English[t]>>TC[t];
+	print(i,name,num,math,English,TC);
+	aversubject(i,math,English,TC);
+    cout<<"\n如果想要更改某位学生的分数请输入1，否则输入0"<<endl;
+	cin>>j;
+	if(j==1)
+    {
+       cout<<"\n输入要改变第几位学生"<<endl;
+       cin>>k;
+      cout<<"\n输入该学生的具体信息：姓名、学号、数学成绩、英语成绩、计算机成绩"<<endl;
+      cin>>name[k-1]>>num[k-1]>>math[k-1]>>English[k-1]>>TC[k-1];
+ print(i,name,num,math,English,TC);
+aversubject(i,math,English,TC);
+    }
+	}
+	return 0;
+}
+
+#include<iostream>
+#include<cstdio>
+#include<string>
+using namespace std;
+double lastprice;
+class Package
+{
+public:
+	Package(double weight);
+	virtual void calculatecost() = 0;
+protected:
+	string getname;
+	string sendname;
+	string dress;
+	double weight;
+};
+Package::Package(double weight)
+{
+	this->weight = weight;
+}
+class Common:public Package
+{
+public:
+	Common(int firstprice, int firstweight, double perprice, double weight);
+	virtual void calculatecost()
+	{
+		if (weight > firstweight)
+		{
+			lastprice = (firstprice + (weight - firstweight)*perprice);
+			printf("您需要支付的快递费用为： %.2lf ", lastprice );
+		}
+		if (weight <= firstweight)
+		{
+			printf( "您需要支付的快递费用为：%d " , firstprice );
+		}
+	}
+protected:
+	int firstprice;
+	double perprice;
+	int firstweight;
+};
+Common::Common (int firstprice, int firstweight, double perprice,double weight):Package(weight)
+{
+	this->firstprice = firstprice;
+	this->firstweight = firstweight;
+	this->perprice = perprice;
+}
+class Urgent:public Package
+{
+public:
+    Urgent(int firstprice, int firstweight, double perprice, double weight);
+    virtual void calculatecost()
+	{
+      lastprice=(firstprice+weight*perprice);
+      printf("您需要支付的快递费用为： %.2lf ", lastprice);
+	}
+protected:
+	int firstprice;
+	int perprice;
+	int firstweight;
+};
+Urgent::Urgent (int firstprice, int firstweight, double perprice,double weight):Package(weight)
+{
+	this->firstprice = firstprice;
+	this->firstweight = firstweight;
+	this->perprice = perprice;
+}
+int main()
+{
+	string sendname, getname, dress;
+	double weight; int i;
+	cout << "*****************************  收费说明  ***********************************" << endl;
+	cout << "\n普通邮递： 不超过10kg，配送费10元；超重部分按每kg 1.6元进行累加" << endl;
+	cout <<"加急邮递： 加急起价费10元，每kg重量*10，公里数*0.2累加\n"<<endl;
+	cout << "****************************************************************************" << endl;
+	cout << "若选择普通邮递，请按1，若选择加急快递，请按2\n" << endl;
+	cin >> i;
+	cout << "请按次输入您的姓名，收信人姓名，收件人地址，包裹重量" << endl;
+	scanf("%s%s%s%lf", &sendname, &getname, &dress, &weight);
+	if (i == 1)
+	{
+		Package *pack=new Common(10,10,1.6, weight);
+		printf("邮件人姓名： % s , 收件人姓名： %s , 地址： %s ",sendname,getname,dress);
+		pack->calculatecost();
+         delete pack;
+         pack=NULL;
+	}
+	if(i==2)
+    {
+        Package *pack=new Urgent(10,0.2,10,weight);
+        printf("邮件人姓名： % s , 收件人姓名： %s , 地址： %s ",sendname,getname,dress);
+		pack->calculatecost();
+         delete pack;
+         pack=NULL;
+    }
+	return 0;
+}
