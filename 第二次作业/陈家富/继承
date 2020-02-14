@@ -1,0 +1,340 @@
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+class Student
+{
+protected:
+	int number=0;        //学号
+	string name;     //姓名
+	
+
+public:
+	static int num;         //人数
+	
+	static int Getnum()
+	{
+		return (num);
+	}
+	void Setstud(int n, string s)
+	{
+		number = n;
+		name = s;
+	}
+	void Setnumber(int n)
+	{
+		number = n;
+	}
+	void Setname(string s)
+	{
+		name = s;
+	}
+	
+};
+
+class Score:Student
+{
+private:
+	double math;
+	double english;
+	double technology;
+public:
+	static double sum;         //总分
+	/*默认构造初始化*/
+	Score()
+	{
+		number = 0;
+		math = 0;
+		english = 0;
+		technology = 0;
+		num++;
+	}
+	/*拷贝构造函数*/
+	Score(const Score& h)
+	{
+		english = h.english;
+		math = h.math;
+		technology = h.technology;
+	}
+	/*输入信息*/
+	void Input()
+	{
+		int i;
+
+		cout << "<学生管理系统>" << endl;
+		cout << "例:191205101 陈家富 100 90 90" << endl;
+		cout << "---------------" << endl;
+		cout << " 学 号 :" ; cin >> number;
+		cout << " 姓 名 :" ; cin >> name;
+		cout << " 数 学 成 绩 :" ; cin >> math;
+		cout << " 英 语 成 绩 :"; cin >> english;
+		cout << " 计 算 机 成 绩:"; cin >> technology;
+		cout << "信息创建成功!" << endl;
+		cout << "---------------" << endl;
+	
+	}
+	/*修改数学*/
+	void Setmath( )
+	{
+		double m;
+		cout << "<数学系统>" << endl;
+		cout << "请输入修改为:"; cin >> m;
+		math = m;
+		cout << "修改成功!" << endl;
+	}
+	/*修改英语*/
+	void Setenglish()
+	{
+		double e;
+		cout << "<英语系统>" << endl;
+		cout << "请输入修改为:"; cin >> e;
+		english = e;
+		cout << "修改成功!" << endl;
+	}
+	/*修改计算机*/	
+	void Settechnology()
+	{
+		double t;
+		cout << "<计算机系统>" << endl;
+		cout << "请输入修改为:"; cin >> t;
+		technology = t;
+		cout << "修改成功!" << endl;
+	}
+	/*修改成绩*/
+	void Setscore()
+	{
+		int n,a;
+		string s;
+		double m, e, t;
+		while (1)
+		{
+			system("cls");
+			cout << "<成绩管理系统>" << endl;
+			cout << "请输入:1.修改数学成绩 2.修改英语成绩 3.修改计算机成绩 4.修改全部成绩 5.退出该系统" << endl;
+			cin >> a;
+			cout << "---------------" << endl;
+			if (a == 1)
+			{
+				Setmath();
+			}
+			else if (a == 2)
+			{
+				Setenglish();
+			}
+			else if (a == 3)
+			{
+				Settechnology();
+			}
+			else if (a == 4)
+			{
+				Setmath();
+				Setenglish();
+				Settechnology();
+			}
+			else break;
+			cout << "---------------" << endl;
+			system("pause");
+			system("cls");
+		}
+	}
+
+	string Getname()
+	{
+		return name;
+	}
+
+	int Getnumber()
+	{
+		return (number);
+	}
+	/*每个学生总成绩*/
+	double Getsum()
+	{
+		return(math + english + technology);
+	}
+	/*数学*/
+	double Getmath()
+	{
+		return (math);
+	}
+	/*英语*/	
+	double Getenglish()
+	{
+		return(english);
+	}
+	/*计算机*/
+	double Gettechnology()
+	{
+		return(technology);
+	}
+
+	void Display()
+	{	
+		cout << number << "     " << name << "     " << math<<"     "<<english<<"       "<<technology<<"        "<<Getsum()<<"    " << endl;
+	}
+
+	~Score()
+	{
+		num--;
+		sum -= math - english - technology;
+		cout << num << " " << sum << endl;
+	}
+};      //成绩
+
+/*初始化*/
+int Student::num = 0;
+double Score::sum = 0;
+
+/*总体平均成绩*/
+void Averagesum(Score *score[])
+{
+	int j;
+	double sum = 0;
+	cout << "全体平均分:";
+	for (j = 0; j < Student::num; j++)
+	{
+		sum +=score[j]->Getsum();
+	}
+	cout << "" << sum / Student::num << endl;
+}
+/*数学平均成绩*/
+void Averagemath(Score *score[])
+{
+	int j;
+	double sum = 0;
+	cout << "数学平均分:";
+	for (j = 0; j < Student::num; j++)
+	{
+		sum += score[j]->Getmath();
+	}
+	cout << "" << sum / Student::num << endl;
+}
+/*英语平均成绩*/
+void Averageenglish(Score *score[])
+{
+	int j;
+	double sum = 0;
+	cout << "英语平均分:";
+	for (j = 0; j < Student::num; j++)
+	{
+		sum += score[j]->Getenglish();
+	}
+	cout << "" << sum / Student::num << endl;
+}
+/*计算机平均成绩*/
+void Averagetechnology(Score* score[])
+{
+	int j;
+	double sum = 0;
+	cout << "计算机平均分:";
+	for (j = 0; j < Student::num; j++)
+	{
+		sum += score[j]->Gettechnology();
+	}
+	cout << "" << sum / Student::num << endl;
+}
+
+void Averageselfscore(Score* score[])
+{
+	system("cls");
+	int n, j;
+	cout << "请输入查询的学号:"; cin >> n;
+	for (j = 0; j < Student::num; j++)
+	{
+		if (score[j]->Getnumber() == n)
+		{
+			cout << "" << score[j]->Getname() << "的平均成绩为:";
+			cout << "" << score[j]->Getsum() / 3 << endl;
+		}
+	}
+}
+
+int main()
+{	 
+	Score* score[5];
+	int n,i,choice,j;
+	i = 0;
+	
+	cout << "选择你需要的操作:" << endl;
+	cout << "1.填写一名学生信息 2.遍历所有学生信息 3.修改成绩  4.平均分 5.退出"<< endl;
+	
+	while (~scanf_s("%d", &choice))
+	{
+		switch (choice)
+		{
+		case 1:
+			system("cls");
+			score[i] = new Score;
+			score[i]->Input();
+			i++;
+			break;
+		case 2:
+			system("cls");
+			cout << "学号          姓名       数学    英语     计算机    总分" << endl;
+			j = 0;
+			for (; j < i; j++)
+				score[j]->Display();
+			break;
+		case 3:
+			system("cls");
+			int j, n;
+			cout << "请输入想要修改的学生学号:"; cin >> n;
+			for (j = 0; j < i; j++)
+			{
+				if (score[j]->Getnumber() == n)
+				{
+					score[j]->Setscore();
+					break;
+				}
+			}
+			break;
+		case 4:
+			system("cls");
+			int a;
+			while (1)
+			{
+				cout << "<成绩总结系统>" << endl;
+				cout << "请输入:1.数学平均分 2.英语平均分 3.计算机平均分 4.总体平均分 5.个人平均分 6.退出该系统" << endl;
+				cin >> a;
+				cout << "---------------" << endl;
+				if (a == 1)
+				{
+					Averagemath(&score[0]);
+				}
+				else if (a == 2)
+				{
+					Averageenglish(&score[0]);
+				}
+				else if (a == 3)
+				{
+					Averagetechnology(&score[0]);
+				}
+				else if (a == 4)
+				{
+					Averagesum(&score[0]);
+				}
+				else if (a == 5)
+				{
+					Averageselfscore(&score[0]);
+				}
+				else
+					break;
+				cout << "---------------" << endl;
+				system("pause");
+				system("cls");
+			}
+			break;
+		case 5:
+			exit(0);
+			break;
+		default:
+			cout << "输入错误,请重新输入!" << endl;
+		}
+		system("pause");
+		system("cls");
+		cout << "选择你需要的操作:" << endl;
+		cout << "1.填写一名学生信息 2.遍历 3.修改成绩  4.平均分 5.退出" << endl;
+	}
+}
+
