@@ -1,0 +1,130 @@
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+class package
+{
+protected:
+	string sender;         //寄件人
+	string recipient;      //收件人
+	string adress;         //地址
+	string name;           //包裹名称
+	double distance;       //加急距离
+	double weight;         //重量
+public:
+	package()
+	{
+		distance = 0;
+		weight = 0;
+	}
+	package(string s, string r, string a,string n,double d, double w)
+	{
+		sender = s;
+		recipient = r;
+		adress = a;
+		name = n;
+		distance = d;
+		weight = w;
+	}
+	virtual void Input() = 0;
+	virtual void CalculateCost() = 0;
+};
+
+class Ordinarypackage :public package
+{
+public:
+	Ordinarypackage(string s, string r, string a, string n, double d, double w):package(s,r,a,n,d,w)
+	{
+		d = 0;
+	}
+
+	void Input()
+	{
+		cout << "<包裹运费系统>" << endl;
+		cout << "---------------" << endl;
+		cout << "寄件人:"; cin >> sender;
+		cout << "包裹名称:"; cin >> name;
+		cout << "地址:"; cin >> adress;
+		cout << "重量(kg):"; cin >> weight;
+		cout << "收件人:"; cin >> recipient;
+		cout << "---------------" << endl;
+		cout << "正在整理信息 请稍后..." << endl;
+		system("pause");
+		cout << "录入成功!" << endl;
+		system("cls");
+	}
+
+	void CalculateCost()
+	{
+		cout << " 普通包裹 " << endl;
+		cout << "说 明 :" << endl;
+		cout << "1. 2.5kg以下的包裹,不计超重." << endl;
+		cout << "2.超重部分,计入超重.(1 kg=2￥)" << endl;
+		cout << "3.邮费3￥起" << endl;
+		cout << "---------------" << endl;
+		if (weight <= 2.5)
+		{
+			cout << "该包裹的邮费为:3￥"<<endl;
+		}
+		else
+		{
+			double money = 0;
+			money = 3 + (weight - 2.5) * 2;
+			cout << "该包裹的邮费为:" << money << " " << endl;
+		}
+	}
+};
+
+class Urgentpackage :public package
+{
+public:
+	Urgentpackage(string s, string r, string a, string n, double d, double w) :package(s, r, a, n, d, w){}
+
+	void Input()
+	{
+		cout << "<加急包裹运费系统>" << endl;
+		cout << "---------------" << endl;
+		cout << "寄件人:"; cin >> sender;
+		cout << "包裹名称:"; cin >> name;
+		cout << "地址:"; cin >> adress;
+		cout << "重量(kg):"; cin >> weight;
+		cout << "加急公里数(km):"; cin >> distance;
+		cout << "收件人:"; cin >> recipient;
+		cout << "---------------" << endl;
+		cout << "正在整理信息 请稍后..." << endl;
+		system("pause");
+		cout << "录入成功!" << endl;
+		system("cls");
+	}
+
+	void CalculateCost()
+	{
+		cout << " 加急包裹 " << endl;
+		cout << "说 明 :" << endl;
+		cout << "1. 按重量计费,无超重." << endl;
+		cout << "3.邮费5￥起" << endl;
+		cout << "---------------" << endl;
+		double money = 0;
+		money = 5 + weight*10+distance*0.02;
+		cout << "该包裹的邮费为:" << money << " " << endl;
+	}
+};
+
+int main()
+{
+	package* pack;
+	Ordinarypackage ord("a","b","c","d",0,2);          //初始化 为默认状态
+	Urgentpackage urg("a", "b", "c", "d", 1, 2);
+
+	pack = &ord;
+
+	pack->Input();
+	pack->CalculateCost();
+	system("pause");
+	system("cls");
+	pack = &urg;
+
+	pack->Input();
+	pack->CalculateCost();
+}
