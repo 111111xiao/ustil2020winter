@@ -1,0 +1,125 @@
+#include<iostream>
+#include<string>
+#include<cstdio>
+using namespace std;
+
+class package
+{
+protected:
+	string me;  //寄件人
+	string you;  //收件人      
+	string adress;  //快递地址         
+	double length;  //加急距离       
+	double weight;  //快递重量         
+public:   
+	package()
+	{
+		length = 0;
+		weight = 0;
+	}
+	package(double length, double weight);
+	virtual void CalculateCost() = 0;
+};
+	package::package(double length, double weight)
+	{
+		this->weight = weight;
+		this->length = length;
+	}
+
+class Usualpackage :public package
+{
+protected:
+	int money;
+	int fee;
+	int fweight;
+public:
+	Usualpackage(int m,int f,int fweight,double length,double weight) :package(length,weight)
+	{
+		length = 0;
+	}
+
+	
+
+	void CalculateCost()
+	{
+		cout << " 普通快递 " << endl;
+		cout << " 首重为5kg" << endl;
+		cout << "超重1kg收取2元" << endl;
+		cout << "首重为5元" << endl;
+		
+		if (weight <= 5)
+		{
+			cout << "该快递的邮费为5元" << endl;
+		}
+		else
+		{
+			double money = 0;
+			money = 5.0 + (weight - 5.0) * 2.0;
+			cout << "该快递的邮费应为:" << money << endl;
+		}
+	}
+
+};
+
+
+class Specialpackage :public package
+{
+protected:
+	int money;
+	int fee;
+	int fweight;
+public:
+	
+
+	Specialpackage(int m,int f,int fweight,double length, double weight) :package( length, weight) {}
+
+	
+
+	void CalculateCost()
+	{
+		cout << " 加急快递 " << endl;
+		cout << "首重费用为5元" << endl;
+		double money = 0;
+		money = 5 + weight * 10 + length * 0.02;
+		cout << "该快递的邮费为:" << money << " " << endl;
+	}
+};
+
+int main()
+{
+	string me;
+	string you;
+	string adress;
+	double length;
+	double weight;
+	int i;
+	package* pack;
+	cout << "选择普通邮递，请按1，选择加急快递，请按2\n" << endl;
+	cin >> i;
+	if (i == 1)
+	{
+		cout << "寄件人:"; cin >> me;
+		cout << "地址:"; cin >> adress;
+		cout << "快递重量:"; cin >> weight;
+		cout << "收件人:"; cin >> you;
+		Usualpackage usu(5, 2, 5, 0, weight);
+		pack = &usu;
+		pack->CalculateCost();
+		
+		
+	}
+	if (i == 2)
+	{
+		cout << "寄件人:"; cin >> me;
+		cout << "地址:"; cin >> adress;
+		cout << "快递重量:"; cin >> weight;
+		cout << "加急距离:"; cin >> length;
+		cout << "收件人:"; cin >> you; 
+		Specialpackage spe(5, 2, 5, length, weight);
+		pack = &spe;
+		pack->CalculateCost();
+		
+		
+	}
+	return 0;
+}
