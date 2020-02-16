@@ -1,0 +1,132 @@
+#include<iostream>
+#include<string>
+using namespace std;
+class Package
+{
+public:
+	string addressee;
+	string sender;
+	string address;
+	double weight;
+	double price;
+	double Eprice;
+	double priority;
+
+
+};
+//普通包裹
+class Ordinary_parcel : public Package
+{
+public:
+	 double weight_;
+
+	 double priority_;                          //首重
+     double price_ ;                                    //单价
+
+		void setparcel();                                        //初始化
+		
+		friend void calculateCost(Package& PA);
+		
+		Ordinary_parcel();
+		
+};
+
+
+
+
+Ordinary_parcel::Ordinary_parcel()
+{
+	cout << "输入寄件人姓名 ：";
+	cin >> sender;
+	cout << "输入收件人姓名 ：";
+	cin >> addressee;
+	cout << "地址：";
+	cin >> address;
+	cout << "包裹重量：";
+	cin >> weight;
+	cout << "首重：";
+	cin >> priority;
+	cout << "首重的价格：";
+	cin >> price;
+	cout << "超重价格:";
+	cin >> Eprice;
+
+}void Ordinary_parcel::setparcel()
+{
+	weight_ = weight;
+
+	price_ = price;
+	priority_ = priority;
+}
+void calculateCost(Package& PA)
+{
+	if (PA.weight <= PA.priority)
+	{
+		cout << " ------------------------------------------------------" << endl;
+		cout << "价格：" << PA.priority * PA.price << endl;
+
+	}
+	else
+		if (PA.weight > PA.priority)
+		{
+			cout << " ------------------------------------------------------" << endl;
+			cout << "价格：" << PA.priority * PA.price + (PA.weight - PA.priority) * PA.Eprice << endl;
+
+		}
+}
+
+
+//  加急包裹
+class urgent_package : public Package
+{
+public:
+	 double Jprice;                      //加急起价费
+	 double kilometre;                         //加急公里
+	urgent_package();
+	friend  void calculateCost(urgent_package& P);
+
+};
+
+urgent_package::urgent_package()
+{
+	cout << "输入寄件人姓名 ：";
+	cin >> sender;
+	cout << "输入收件人姓名 ：";
+	cin >> addressee;
+	cout << "地址：";
+	cin >> address;
+	cout << "包裹重量：";
+	cin >> weight;
+	cout << "加急公里：";
+	cin >> kilometre;
+	cout << "加急起价费：";
+	cin >> Jprice;
+}
+void calculateCost(urgent_package& P)
+{
+	cout <<" ------------------------------------------------------" << endl;
+	cout <<"价格："<< P.Jprice + (P.weight * 10) + P.kilometre * 0.02 << endl;
+}
+
+int main()
+{
+	int i;
+	cout << "是否为加急包裹(是则为1，否为0)：";
+	cin >> i;
+	if (i == 1)
+	{
+		urgent_package* SB;
+		SB = new urgent_package;
+		calculateCost(*SB);
+		system("pause");
+	}
+	else
+		if (i == 0)
+		{
+			Ordinary_parcel* SP;
+			SP = new Ordinary_parcel;
+			calculateCost(*SP);
+			system("pause");
+		}
+	return 0;
+}
