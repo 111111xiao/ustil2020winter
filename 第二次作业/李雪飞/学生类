@@ -1,0 +1,79 @@
+#include<iostream>
+#include<string>
+
+using namespace std;
+class student02//student的类
+{
+public:
+  friend void showAverage(student02 Stu);
+	student02();   //构造函数
+	//~student02();
+	double English;
+	double Maths;
+	double Computerproperties;
+private:
+	string name;
+	string ID;
+	double score;
+	static double num;
+	static int sum;
+	static int a;
+	static int b;
+	static int c;
+	
+};
+double student02::num = 0;
+int student02::sum = 0;
+int student02::a = 0;
+int student02::b = 0;
+int student02::c = 0;
+
+student02::student02()
+{
+	sum++;
+	
+	cout << "请输入第" << sum << "个学生信息" << endl;
+	cout << "姓名：";
+	cin >> name;
+	cout << "学号：";
+	cin >> ID;
+	cout << "输入英语成绩：";
+	cin >> English;
+	cout << "输入数学成绩：";
+	cin >> Maths;
+	cout << "输入计算机属性成绩：";
+	cin >> Computerproperties;
+	score = English + Maths + Computerproperties;
+	cout << "总成绩："<<score<<endl;
+	num += score;
+	a += English;
+	b += Maths;
+	c += Computerproperties;
+
+}
+
+
+void  showAverage(student02 Stu)
+{
+	cout << "-------------------------------" << endl;
+	cout << "全部学生的总分：" << Stu.num << endl;
+	cout << "全部学生的平均分：" << Stu.num / Stu.sum << endl;
+	cout << "全部学生英语的平均分：" << Stu.a / Stu.sum << endl;
+	cout << "全部学生数学的平均分：" << Stu.b / Stu.sum << endl;	
+	cout << "全部学生计算机属性的平均分：" << Stu.c / Stu.sum << endl;
+	;
+	
+}
+
+int main()
+{
+	int n;
+	cout << "共多少个学生:";
+	cin >> n;
+	student02* SP;
+	SP = new student02[n];
+	showAverage(*SP);
+	system("pause");
+	
+	return 0;
+}
