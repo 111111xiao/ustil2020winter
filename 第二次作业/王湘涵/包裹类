@@ -1,0 +1,99 @@
+#include<iostream>
+using namespace std;
+class Package {
+public:
+	int name1;
+	int name2;
+	double address;
+	double weight;
+	double price;
+	double Eprice;
+	double priority;
+	double weight1;
+	double first;//首重 
+	double  cost;//单价
+	double cost;
+
+	double K;
+};
+
+
+class Ordinaryparcel:
+public Package{
+void setparcel(); 
+friend void calculateCost(Package& PA);
+Ordinaryparcel();
+};
+class urgentpackage : public Package {
+public:
+	urgentpackage();
+	friend void calculateCost(urgentpackage& P);
+};
+Ordinaryparcel::Ordinaryparcel() {
+	cout << "寄件人姓名 ：";
+	cin >> name1;
+	cout << "收件人姓名 ：";
+	cin >> name2;
+	cin >> Eprice; cout << "地址：";
+	cin >> address;
+
+	cout << "首重：";
+	cin >> priority;
+	cout << "包裹重量：";
+	cin >> weight;
+	cout << "首重的价格：";
+	cin >> price;
+	cout << "超重价格:";
+
+
+}
+void calculateCost(Package& PA) {
+	if (PA.weight <= PA.priority)
+	{
+		cout << "价格："
+			<< PA.priority * PA.price << endl;
+}
+	else	
+		if (PA.weight > PA.priority)
+		{		
+		cout << "价格：" << PA.priority * PA.price + (PA.weight - PA.priority) * PA.Eprice << endl;
+	}
+}
+
+
+urgentpackage::urgentpackage() { 
+	cout << "寄件人姓名 ：";
+	cin >> name1;
+	cout << "收件人姓名 ：";	
+	cin >> name2;
+	cout << "地址：";
+	cin >> address;
+	cout << "重量：";
+	cin >> weight;	
+	cout << "加急路程：";	
+	cin >> K;
+	cout << "加急起价：";
+	cin >> cost;
+}
+void calculateCost(urgentpackage& P) 
+{
+cout << "价格："
+<< P.cost + (P.weight * 10) + P.K * 0.02 << endl;
+}
+int main() { 
+	int i;	
+	cout << "是否为加急包裹(是则为1，否为2)：";
+	cin >> i;	
+	if (i == 1) {
+		urgentpackage*p;
+	calculateCost(*p);
+		
+	 } 
+	else	
+		if (i == 2) { 
+			Ordinaryparcel* p;	
+			calculateCost(*p);		
+	
+		}
+	return 0;
+}
