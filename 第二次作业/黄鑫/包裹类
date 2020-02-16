@@ -1,0 +1,90 @@
+#include<iostream>
+
+using namespace std;
+class Package
+{
+public:
+	string nameji;
+	string nameshou;
+	string addressji;
+	string addressshou;
+	double weight;
+	static int num;
+	static double expenses;//总费用
+	double Firstpriority;//首重
+	double Firstweightfee;//首重费
+	double monovalent;//每公斤计费单价
+	double Emergencykilometers;//加急公里数
+	double Expeditedstartingprice;//加急起费价
+	Package();
+};
+double Package::expenses = 0;
+int Package::num = 0;
+Package::Package()
+{
+	num++;
+	cout << "请输入第" << num << "个包裹的信息!" << endl;
+	cout << "请输入寄件人姓名: ";
+	cin >> nameji;
+	cout << "请输入收件人姓名: ";
+	cin >> nameshou;
+	cout << "请输入寄件地址: ";
+	cin >> addressji;
+	cout << "请输入收件地址: ";
+	cin >> addressshou;
+	cout << "请输入包裹重量: ";
+	cin >> weight;
+	cout << "请输入首重量: ";
+	cin >> Firstpriority;
+	cout << "请输入首重费: ";
+	cin >> Firstweightfee;
+
+	cout << endl;
+}
+class Regularpackage
+{
+public:
+	double a, b;
+	int Rectangle(double Firstpriority, double Firstweightfee, double monovalent,double weight)
+	{
+		a = Firstpriority;
+		b = (weight - Firstweightfee) * monovalent;
+	}
+	double expenses()
+	{
+		return a + b;
+	}
+};
+
+class Urgentpackage
+{
+	double c, d, e;
+	int Rectangle(double Emergencykilometers, double Expeditedstartingprice, double weight)
+	{
+		c = Expeditedstartingprice;
+		d = weight * 10;
+		e = Expeditedstartingprice * 0.02;
+	}
+	double expenses()
+	{
+		return c + d + e;
+	}
+};
+int main()
+{
+	int i;
+	cout << "是否为加急";
+	cin >> i;
+	if (i == 1)
+	{
+		
+		Regularpackage(*p);
+	}
+	else
+		if (i == 0)
+		{
+			
+			Urgentpackage(*q);
+		}
+	return 0;
+}
