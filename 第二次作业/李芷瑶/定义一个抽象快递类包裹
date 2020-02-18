@@ -1,0 +1,117 @@
+#include <iostream>
+
+#include <stdio.h>
+
+using namespace std;
+
+class Package {
+
+public:
+
+	string m_sender;
+
+	string m_addressee;
+
+	string m_location;
+
+	int m_weight;
+
+	
+
+public:	
+
+	virtual void calculateCost(){
+
+		cout << " ";
+
+	}
+
+
+
+};
+
+
+
+
+
+class commonPackage :public Package {
+
+
+
+public:
+
+
+
+	virtual void calculateCost() {
+
+		cout << 2+ 2* 2;
+
+	}
+
+	commonPackage(string sender, string addressee, string location, int weight) {
+
+		m_sender = sender;
+
+		m_addressee = addressee;
+
+		m_location = location;
+
+		m_weight = weight;
+
+		cout << "寄件人：" << m_sender << "收件人：" << m_addressee << "地址：" << m_location << "重量：" << m_weight;
+
+	}
+
+	
+
+};
+
+
+
+class urgentPackage :public Package {
+
+	virtual void calculateCost() {
+
+		cout << 20+m_weight*10+10*0.02;
+
+	}
+
+	urgentPackage(string sender, string addressee, string location, int weight) {
+
+		m_sender = sender;
+
+		m_addressee = addressee;
+
+		m_location = location;
+
+		m_weight = weight;
+
+		cout << "寄件人：" << m_sender << "收件人：" << m_addressee << "地址：" << m_location << "重量：" << m_weight;
+
+	}
+
+
+
+
+
+};
+
+int main()
+
+{
+
+	Package* Package1 = new commonPackage("zx", "啊啊", "沈阳", 123);
+
+	Package* Package2 = new commonPackage("lzy", "啊啊", "葫芦岛", 156);
+
+	Package1->calculateCost();
+
+	Package2->calculateCost();
+
+	delete Package1;
+
+	delete Package2;
+
+	return 0;
+
+}
