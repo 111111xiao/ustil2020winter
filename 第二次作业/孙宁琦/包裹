@@ -1,0 +1,116 @@
+#include<iostream>
+#include<string>
+#include<cstdio>
+using namespace std;
+
+class package
+{
+public:
+	string pman;//寄件人
+	string rman;//收件人
+	string adress;//地址
+	double length;//距离
+	double weight;//重量
+	package(double length, double weight);
+	virtual void calculateCost()=0;
+};
+package::package(double length, double weight)
+{
+	this->weight = weight;
+	this->length = length;
+}
+
+class upackage :public package//普通包裹
+{
+protected:
+	int money;
+	int fee;
+	int pweight;
+public:
+	upackage(int pweight, double length, double weight) :package(length, weight)
+	{
+		length = 0;
+	}
+
+	void calculateCost()
+	{
+		cout << "普通快递" << endl;
+		cout << "首重为5kg" << endl;
+		cout << "每超重1kg收取5元" << endl;
+		cout << "首重为20元" << endl;
+		if (weight <= 5)
+		{
+			cout << "该快递的邮费为20元" << endl;
+		}
+		else
+		{
+			double money = 0;
+			money = 20.0 + (weight - 5.0) * 5.0;
+			cout << "该快递的邮费为" << money << "元" << endl;
+		}
+	}
+};
+
+class spackage :public package//加急包裹
+{
+protected:
+	int money;
+	int fee;
+public:
+	spackage(double length, double weight) :package(length, weight) {}
+
+	void calculateCost()
+	{
+		cout << "加急快递" << endl;
+		cout << "加急起价费为10元" << endl;
+		double money = 0;
+		money = 10.0 + weight * 10.0 + length * 0.02;
+		cout << "该快递的邮费为:" << money << "元" << endl;
+	}
+};
+
+int main()
+{
+	string pman;
+	string rman;
+	string adress;
+	double length;
+	double weight;
+	int i;
+	package* pack;
+	cout << "普通邮递，请按1；加急快递，请按2\n";
+	cin >> i;
+	if (i == 1)
+	{
+		cout << "寄件人:";
+		cin >> pman;
+		cout << "收件人:";
+		cin >> rman;
+		cout << "地址:";
+		cin >> adress;
+		cout << "快递重量:";
+		cin >> weight;
+		upackage u(5, 0, weight);
+		pack = &u;
+		pack->calculateCost();
+		system("pause");
+	}
+	if (i == 2)
+	{
+		cout << "寄件人:";
+		cin >> pman;
+		cout << "收件人:";
+		cin >> rman;
+		cout << "地址:";
+		cin >> adress;
+		cout << "快递重量:";
+		cin >> weight;
+		cout << "加急距离:";
+		cin >> length;
+		spackage sp(length, weight);
+		pack = &sp;
+		pack->calculateCost();
+		system("pause");
+	}
+	return 0;
+}
