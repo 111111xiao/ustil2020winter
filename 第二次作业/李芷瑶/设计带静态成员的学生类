@@ -1,0 +1,164 @@
+#include <iostream>
+class Student{
+public:
+    static int total;//静态成员变量，用于统计学生个数
+public:
+    Student(char*id,char  name,float score);//构造
+    int show();//输出同学个人信息
+private:
+    char*s_id;
+    char s_name;
+    float s_score;
+};
+int Student::total = 0;//为total分配内存
+Student::Student(char*id,char name,float score):s_id(id),s_name(name),s_score(score){
+    total++;//操作静态变量
+}
+int Student::show()
+{
+    stu::cout<<"学号：名字：%d成绩:%f(当前有%d个学生)\n",s_id,s_name,s_score,total;
+}
+
+int main()
+{
+    Student s1(01,"代码",52);
+    s1.show();
+    Student s2(02,"使我",53);
+    s2.show();
+    Student s3(03,"肥胖",54);//半夜写代码实属大大增加饥饿感
+}
+class lScore{
+public:
+    staic int total;//,静态成员变量，用于统计成绩总数
+public:
+    Score (float*english，float math,float computer);//构造
+    int show();//输出成绩
+private:
+    float*s_english;
+    float s_math;
+    float s_computer;
+};
+int Score::total = 0;//位total分配内存
+
+Score::total(float*english,float math,float computer):s_english(english),s_math(math),s_compter(compter){
+        total++;//操作静态变量成员
+}
+int Score::show()
+{
+    printf("英语：%f舒翔： %f计算机：%f,(当前总分)\n",s_english,s_math,s_compter);
+}
+
+int main()
+{
+    Score s1("20",30,50);
+    Score s2("30",40,60);
+    Score s3("50",30,80);
+renturn 0;
+}
+/*#include <iostream>
+
+using namespace std;
+
+class Student{
+
+public:
+
+	static int num;
+
+public :
+
+	Student(string name){
+
+		this->name = name;
+
+		
+
+
+
+		num++;
+
+	}
+
+	~Student() { num--; }
+
+	string name;
+
+	
+
+	int show() {
+
+		return num;
+
+	}
+
+
+
+};
+
+class Score {
+
+public:
+
+	Score(int xh,int ss,int js,int ys) {
+
+		this->xh = xh;
+
+		this->ss = ss;
+
+		this->js = js;
+
+		this->ys = ys;
+
+	}
+
+	int xh;
+
+	int ss;
+
+	int js;
+
+	int ys;
+
+
+
+	
+
+	
+
+};
+
+
+
+int Student::num = 0;
+
+int main()
+
+{
+
+	int s, x, y;
+
+	std::cout << "Hello World!\n";
+
+	Student s1("疫情");
+
+	Score a(5, 100, 100, 100);
+
+	Student s2("使我");
+
+	Score b(5, 100, 100, 100);
+
+	Student s3("下厨了");
+
+	Score c(5, 100, 100, 100);
+
+	s= s1.show();
+
+	x = (a.js + b.js + c.js )/ s;
+
+	cout << x;
+
+
+
+}*/
+
+	     
