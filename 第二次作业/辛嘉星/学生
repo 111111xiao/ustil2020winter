@@ -1,0 +1,103 @@
+#include<iostream>
+#include<cstdio>
+using namespace std;
+class score
+{
+public:
+	int math;
+	int English;
+	int computer;
+	double averscore;
+public:
+	score(int math, int English, int computer);
+	score() {}
+	score(const score& h);
+};
+score::score(int math, int English, int computer)
+{
+	this->math = math;
+	this->English = English;
+	this->computer = computer;
+}
+
+score::score(const score& h)
+{
+	this->math = h.math;
+	this->English = h.English;
+	this->computer = h.computer;
+	this->averscore = h.averscore;
+}
+
+void aver(score m)
+{
+	m.averscore = ((m.English + m.math + m.computer) / 3.0);
+	cout << " 平均成绩：" << m.averscore << endl;
+}
+class student
+{
+private:
+	string name;
+	int num;
+	score grade;
+	static int age;
+public:
+	student(string name, int num, score t)
+	{
+		this->name = name;
+		this->num = num;
+		this->grade = t;
+	}
+	void show();
+};
+int student::age = 19;
+void student::show()
+{
+	cout << "\n姓名：" << name << " 年龄: " << age << " 学号：" << num << " 数学成绩：" << grade.math << " 英语成绩: " << grade.English << " 计算机成绩: " << grade.computer;
+}
+void print(int i, string* name, int* num, int* math, int* English, int* computer)
+{
+	int t;
+	for (t = 0; t < i; t++)
+	{
+		score t1(math[t], English[t], computer[t]);
+		student d1(name[t], num[t], t1);
+		d1.show();
+		aver(t1);
+	}
+}
+void aversubject(int i, int* math, int* English, int* computer)
+{
+	int math1 = 0, English1 = 0, computer1 = 0, t;
+	for (t = 0; t < i; t++)
+	{
+		math1 = math1 + math[t];
+		English1 = English1 + English[t];
+		computer1 = computer1 + computer[t];
+	}
+	cout << endl << "数学平均分: " << (double)math1 / i << " 英语平均分： " << (double)English1 / i << " 计算机平均分： " << (double)computer1 / i << endl;
+}
+int main()
+{
+	int  num[50], math[50], English[50], computer[50], i, t, j, k, subject, right;
+	string name[100];
+	while (~printf("\n请输入要存储的整体数据个数：\n")) {
+		scanf_s("%d", &i);
+		printf("\n请输入学生的具体信息：姓名、学号、数学成绩、英语成绩、计算机成绩\n");
+		for (t = 0; t < i; t++)
+			cin >> name[t] >> num[t] >> math[t] >> English[t] >> computer[t];
+		print(i, name, num, math, English, computer);
+		aversubject(i, math, English, computer);
+		cout << "\n如果想要更改某位学生的分数请输入1，否则输入0" << endl;
+		cin >> j;
+		if (j == 1)
+		{
+			cout << "\n输入要改变第几位学生" << endl;
+			cin >> k;
+			cout << "\n输入该学生的具体信息：姓名、学号、数学成绩、英语成绩、计算机成绩" << endl;
+			cin >> name[k - 1] >> num[k - 1] >> math[k - 1] >> English[k - 1] >> computer[k - 1];
+			print(i, name, num, math, English, computer);
+			aversubject(i, math, English, computer);
+		}
+	}
+	return 0;
+}
