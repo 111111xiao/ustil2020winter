@@ -1,0 +1,67 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+	class student {
+	private:	string name;
+		   int num;	
+		   double number;
+		   static int age;
+	public:	student(string name, int num, double t)
+	{
+		this->name = name;
+		this->num = num;
+		this->number = t;
+	}
+		  void show();
+	};
+	int student::age = 19; void student::show()
+	{
+		cout << "\n姓名：" << name <<
+			"年龄: " << age <<
+			" 学号：" << num <<
+			" 数学成绩：" << average.math <<
+			" 英语成绩: " << average.English <<
+			" 计算机成绩: " << average.computer;
+	}
+	class score {
+	public:
+		int math;
+		int English;
+		int computer;
+		double average;
+	public:	score(int math, int English, int computer);
+		  score() {}
+		  score(const score& m);
+	};
+	score::score(int math, int English, int computer)
+	{
+		this->math = math;
+		this->English = English;
+		this->computer = computer;
+	}
+	score::score(const score& m)
+	{
+		this->math = m.math;
+		this->English = m.English;
+		this->computer = m.computer;
+		this->average = m.average;
+	}
+	void aver(score m) {
+		m.average = ((m.English + m.math + m.computer) / 3.0);
+		cout << " 平均成绩：" << m.average << endl;
+	}
+	int main() {
+		int num[50], math[50], English[50], computer[50], i, t, subject, right;
+		string name[100];
+		while (~printf("\n请输入要存储的整体数据个数：\n"))
+		{
+			scanf_s("%d", &i);
+			printf("\n请输入学生的具体信息：姓名、学号、数学成绩、英语成绩、计算机成绩\n");
+			for (t = 0; t < i; t++)
+				cin >> name[t] >> num[t] >> math[t] >> English[t] >> computer[t];
+			printf(i, name, num, math, English, computer);
+		
+		
+	}	return 0;
+}
