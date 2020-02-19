@@ -1,0 +1,65 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Student
+{
+public:
+	int ID;
+	string Name;
+	double Score;
+	double English;
+	double Maths;
+	double Computerproperties;//计算机属性
+	static double sum;
+	static int num;
+	static double a;
+	static double b;
+	static double c;
+	Student();
+};
+double Student::sum = 0;
+int Student::num = 0;
+double Student::a = 0;
+double Student::b = 0;
+double Student::c = 0;
+Student::Student()
+{
+	num++;
+	cout << "请输入第" << num << "个学生的信息!" << endl;
+	cout << "请输入学号: ";
+	cin >> ID;
+	cout << "请输入姓名: ";
+	cin >> Name;
+	cout << "请输入成绩: ";
+	cin >> Score;
+	cout << "请输入英语成绩: ";
+	cin >> English;
+	cout << "请输入数学成绩: ";
+	cin >> Maths;
+	cout << "请输入计算机属性成绩: ";
+	cin >> Computerproperties;
+	cout << endl;
+	sum += Score;
+	a += English;
+	b += Maths;
+	c += Computerproperties;
+}
+void ShowAverage(Student Stu)
+{
+	cout << "---------------------------" << endl;
+	cout << "全部学生的总分为: " << Stu.sum << endl;
+	cout << "全部学生的平均分为: " << Stu.sum / Stu.num << endl;
+	cout << "全部学生的英语平均分为: " << Stu.a / Stu.num << endl;
+	cout << "全部学生的数学平均分为: " << Stu.b / Stu.num << endl;
+	cout << "全部学生的计算机属性平均分为: " << Stu.c / Stu.num << endl;
+	cout << endl;
+}
+int main()
+{
+	Student* Sp;
+	Sp = new Student[3];
+	ShowAverage(*Sp);
+	system("pause");
+	return 0;
+}
