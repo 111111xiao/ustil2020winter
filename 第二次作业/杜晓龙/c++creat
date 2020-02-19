@@ -1,0 +1,302 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+class Student //学生信息类
+{
+protected:
+    int number; //学号
+    char *name; //姓名
+public:
+    double math, C_Object, english; //考试分数
+    Student(Student &temp);
+    Student(char *name = NULL, int nu = 0, double m = 0, double c = 0, double e = 0);
+    void NumberShow() const;     //学号查询
+    void NameShow() const;       //姓名查询
+    void StudentMessage() const; //学生信息
+    ~Student();                  //析构函数
+};
+
+Student::Student(char *n, int nu, double m, double c, double e)
+{
+
+    name = new char[strlen(n) + 1];
+    strcpy(name, n);
+    number = nu;
+    math = m;
+    C_Object = c;
+    english = e;
+}
+Student::Student(Student &temp) //拷贝构造函数
+{
+    name = new char[strlen(temp.name) + 1];
+    strcpy(name, temp.name);
+    number = temp.number;
+    math = temp.math;
+    C_Object = temp.C_Object;
+    english = temp.english;
+}
+
+Student::~Student() //析构函数
+{
+    delete[] name;
+}
+void Student::NumberShow() const
+{
+    cout << "Number of student is:" << number << endl;
+}
+
+void Student::NameShow() const
+{
+    cout << "Name of student is:" << name << endl;
+}
+void Student::StudentMessage() const
+{
+    cout << "/************************/" << endl;
+    cout << "Message of " << name << " is:" << endl;
+    cout << "Number is:" << number << endl;
+    cout << "math:" << math << endl;
+    cout << "C++:" << C_Object << endl;
+    cout << "english:" << english << endl;
+    cout << "/************************/" << endl;
+    cout << "\n"
+         << endl;
+}
+class Score //学生成绩类
+{
+private:
+    static int sum, num;         //总分和人数
+    static int sum1, sum2, sum3; // 单一科目总成绩
+public:
+    double math, C_Object, english; //考试分数
+    double newscore;
+    double score;
+
+    double Change(double math_, double C_Object_, double english_) //更改成绩
+    {
+        score = math + C_Object + english;
+        newscore = math_ + C_Object_ + english_;
+        sum += score - newscore;
+        score = newscore;
+        sum1 += math - math_;
+        math = math_;
+        sum2 += C_Object - C_Object_;
+        C_Object = C_Object_;
+        sum3 += english - english_;
+        english = english_;
+    }
+
+    Score(double m, double c, double e)
+    {
+        math = m;
+        C_Object = c;
+        english = e;
+        sum = m + c + e; //总成绩
+        num++;           //人数累计
+        sum1 += m;
+        sum2 += c;
+        sum3 += e;
+    }
+
+    static double avg() //静态成员函数求平均成绩
+    {
+        return sum / num;
+    }
+
+    double avg1()
+    {
+        return sum1 / num;
+    }
+    double avg2()
+    {
+        return sum2 / num;
+    }
+    double avg3()
+    {
+        return sum3 / num;
+    }
+};
+
+int Score::sum = 0;
+int Score::num = 0;
+int Score::sum1 = 0;
+int Score::sum2 = 0;
+int Score::sum3 = 0; //静态成员在类外初始化
+
+int main()
+{
+    Student stu1("wang  fang", 181203101, 78, 80, 90);
+    Student stu2("gai  lun", 181203102, 81, 79, 91);
+    Student stu3("Wang  wu", 181203103, 80, 66, 78);
+    Student stu4(stu1);
+    stu1.StudentMessage();
+    stu2.StudentMessage();
+    stu3.StudentMessage();
+    stu4.StudentMessage();
+    stu1.NameShow();
+    stu1.NumberShow();
+    stu2.NameShow();
+    stu2.NumberShow();
+    stu3.NameShow();
+    stu3.NumberShow();
+    Score s1(78, 80, 90);
+    Score s2(81, 79, 91);
+    Score s3(80, 66, 78);
+    cout << "total average:" << s3.avg() << endl;
+    cout << "math total average:" << s3.avg1() << endl;
+    cout << "C++ total average:" << s3.avg2() << endl;
+    cout << "english total average:" << s3.avg3() << endl;
+    cout << "\n"
+         << endl;
+    s1.Change(77, 79, 89);
+    s2.Change(80, 78, 90);
+    s3.Change(79, 65, 77);
+    cout << "new total average:" << s3.avg() << endl;
+    cout << "new math total average:" << s3.avg1() << endl;
+    cout << "new C++ total average:" << s3.avg2() << endl;
+    cout << "new english total average:" << s3.avg3() << endl;
+    cout << "\n"
+         << endl;
+    return 0;
+}
+ 
+ 
+ 
+ #include<iostream>
+#include<string>
+using namespace std;
+class Package
+{
+protected:
+  string senderName, recipientName;
+  string senderAddress,recipientAddress;
+  double weight;
+public:
+  Package(string&sName,string&rName,string&sAddress,string&rAddress,double weight)
+  :senderName(sName),recipientName(rName),senderAddress(sAddress),recipientAddress(rAddress),weight(weight){}
+  Package(Package &p)
+  :senderName(p.senderName),recipientName(p.recipientName),senderAddress(p.senderAddress),recipientAddress(p.recipientAddress){}
+ virtual double calculateCost_P()
+ {
+   cout<<"首重邮费："<< weight*10<<"元"<<endl;
+
+ }
+void PackageMsg()
+{
+  cout<<"寄件人姓名："<<senderName<<endl;
+  cout << "寄件人地址：" <<senderAddress <<endl;
+  cout<< "收件人姓名：" << recipientName<<endl;
+  cout << "收件人地址：" <<recipientAddress <<endl;
+  cout<<"邮件重量："<<weight<<"kg"<<endl;
+}
+
+~Package(){cout<<"Package已析构"<<endl;}
+
+};
+
+class Ordinary:public Package
+{
+protected:
+  string senderName, recipientName;
+  string senderAddress,recipientAddress;
+  double weight,limitweight,priceweight;
+public:
+  Ordinary(string&sName,string&rName,string&sAddress,string&rAddress,double weight,double limitweight,double priceweight)
+  :Package(sName,rName,sAddress,rAddress,weight),weight(weight),limitweight(limitweight),priceweight(priceweight){}
+  Ordinary(Ordinary&O)
+  :Package(O),weight(O.weight),limitweight(O.limitweight),priceweight(O.priceweight){}
+virtual double calculateCost_overweight()
+ {
+
+    if(weight<limitweight)
+    cout<<"普通包裹邮费："<< weight*10<<"元"<<endl;
+    else
+    cout<<"普通包裹邮费："<< limitweight*10+(weight-20)*priceweight<<"元"<<endl;
+
+ }
+ void showOrdinary()
+ {
+
+      PackageMsg();
+      cout<<"限制重量："<<limitweight<<"kg"<<endl;
+
+ }
+
+~Ordinary(){cout<<"Ordinary已析构"<<endl;}
+};
+
+class Urgent:public Package
+{
+protected:
+  string senderName, recipientName;
+  string senderAddress,recipientAddress;
+  double weight,firstcost,distance;
+public:
+  Urgent(string&sName,string&rName,string&sAddress,string&rAddress,double weight,double firstcost,double distance)
+  :Package(sName,rName,sAddress,rAddress,weight),weight(weight),firstcost(firstcost),distance(distance){}
+  Urgent(Urgent&U)
+  :Package(U),weight(U.weight),firstcost(U.firstcost),distance(U.distance){}
+virtual double calculateCost_Urgent()
+ {
+     cout<<"加急包裹邮费："<< firstcost+weight*10+distance*0.05<<"元"<<endl;
+
+ }
+ void showUrgent()
+ {
+    PackageMsg();
+    cout<<"加急起价费用："<<firstcost<<"元"<<endl;
+    cout<<"加急公里数："<<distance<<"km"<<endl;
+
+ }
+
+~Urgent(){cout<<"Urgent已析构"<<endl;}
+
+
+};
+
+int main()
+{
+    cout<<"*******************************"<<endl;
+    cout<<"----------快递单------------"<<endl;
+    string a1="盖伦",a2="亚索",a3="辽宁省沈阳市铁西区",a4="辽宁省沈阳市于洪区";
+    Package p1(a1,a2,a3,a4,2);
+    p1.PackageMsg();
+    Package *pp1=&p1;
+    cout<<"----------收费详情----------"<<endl;
+    pp1->calculateCost_P();
+    cout<<"*******************************"<<endl;
+    cout<<""<<endl;
+    cout<<""<<endl;
+    cout<<"*******************************"<<endl;
+    cout<<"----------普通包裹单----------"<<endl;
+    string b1="李青",b2="锐雯",b3="河北省石家庄市裕华区",b4="辽宁省大连市甘金州区";
+    Ordinary O1(b1,b2,b3,b4,8,20,5);
+    O1.showOrdinary();
+    Ordinary *OO1=&O1;
+    cout<<"----------收费详情----------"<<endl;
+    OO1->calculateCost_overweight();
+    cout<<"*******************************"<<endl;
+    cout<<""<<endl;
+    cout<<""<<endl;
+    cout<<"*******************************"<<endl;
+    string c1="潘森",c2="蒙多",c3="辽宁省葫芦岛市德玛西亚区",c4="辽宁省沈阳市康平县";
+    Ordinary O2(c1,c2,c3,c4,33,20,5);
+    O2.showOrdinary();
+    Ordinary *OO2=&O2;
+    OO2->calculateCost_overweight();
+    cout<<"*******************************"<<endl;
+    cout<<""<<endl;
+    cout<<""<<endl;
+    cout<<"*******************************"<<endl;
+    cout<<"----------加急包裹单----------"<<endl;
+    string d1="贾克斯",d2="菲欧娜",d3="广西省南宁市兴宁区",d4="辽宁省沈阳市铁西区";
+    Urgent U1(d1,d2,d3,d4,10,20,15);
+    U1.showUrgent();
+    Urgent *UU1=&U1;
+    cout<<"----------收费详情----------"<<endl;
+    UU1->calculateCost_Urgent();
+    cout<<"*******************************"<<endl;
+    cout<<""<<endl;
+    return 0;
+}
+ 
