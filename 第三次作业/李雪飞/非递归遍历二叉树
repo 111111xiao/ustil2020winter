@@ -1,0 +1,183 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct node
+{
+	int data;
+	struct node* lchild, * rchild;
+
+}Node;
+typedef struct
+{
+	Node* bottom;
+	Node* top;
+}Stack;
+
+//初始化栈
+void init(Stack* s)
+{
+	s->bottom = (Node*)malloc(100*sizeof(node));
+	s->top = s->bottom;
+}
+
+int ifEmpty(Stack s)             //判断是否为空
+{
+	if (s.top = s.bottom)
+		return 1;
+	else
+		return 0;
+}
+
+
+void push(Stack* s, Node node)
+{
+	*(s->top++) = node;                    
+}
+
+//出栈函数
+Node pop(Stack* s)
+{
+	Node node;
+	node = *(--(s->top));
+
+	return node;
+}
+
+
+
+
+//看栈顶函数
+Node Checkstack(Stack* s)
+{
+	return  *(s->top - 1);               //返回栈顶元素
+}
+
+int i = -1;
+Node* createTree(char* b)                        //创建二叉树
+{
+	Node* p;
+
+	if (b[++i] == 0)
+	{
+		p = NULL;
+	}
+	else
+	{
+		p = (Node*)malloc(sizeof(Node));
+		p->data = b[i];
+		p->lchild = createTree(b);
+		p->rchild = createTree(b);
+
+	}
+	return p;
+}
+
+
+//先序遍历
+void preorder(Node* root)
+{
+	Stack po;
+	Node curr = *root;
+	init(&po);
+	while (curr.data != 0 || !ifEmpty(po))
+	{
+		if (curr.data == 0)
+		{
+			curr = pop(&po);
+
+		}
+		if (curr.rchild != NULL)
+		{
+			push(&po, *curr.rchild);                                       //将右子进栈
+		}
+		printf("%c", curr.data);
+		if (curr.lchild != NULL)
+		{
+			curr = *curr.lchild;
+		}
+		else
+		{
+			curr = pop(&po);
+		}
+		if ((curr.lchild == NULL) && (curr.rchild == NULL))
+		{
+			printf("%c", curr.data);
+			curr.data = 0;
+		}
+
+	}
+}
+
+
+//中序遍历
+void inOrder(Node* root)
+
+{
+
+	Stack ms;
+
+	Node curr = *root;
+
+	int flag = 0;
+
+
+
+	init(&ms);
+
+	while (curr.data != 0 || ifEmpty(ms))
+	{
+
+		if (curr.lchild != NULL && flag == 0)
+
+		{
+
+			push(&ms, curr);
+
+			curr = *curr.lchild;
+
+		}
+		else
+
+		{
+
+			printf("%d ", curr.data);
+
+			if (curr.rchild != NULL)
+
+			{
+
+				curr = *curr.rchild;
+			}
+
+			flag = 0;
+		}
+
+		if (curr.rchild == NULL && curr.lchild == NULL)
+		{
+
+			printf("%d ", curr.data);
+
+			if (ifEmpty(ms) == 1) break;
+
+			curr = pop(&ms);
+			flag = 1;
+
+		}
+
+	}
+
+}
+
+
+int main()
+{
+	char a[] = {1,2,3,4,5,6,7,8,9};
+	char* tree = a;
+	Node* root = createTree(tree);
+	printf("用非递归方式前序遍历二叉树\n");
+	preorder(root);
+	printf("用非递归方式中序遍历二叉树\n");
+	inOrder(root);
+	return 0;
+
+}
+
