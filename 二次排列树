@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+	char data = '@';
+	struct node* left;
+	struct node* right;
+}BTnode;
+//生成树
+BTnode* CreateTree(BTnode* root, int x)
+{
+	if (!root)
+	{
+		root = (BTnode*)malloc(sizeof(BTnode));
+		root->data = x;
+		root->left = root->right = NULL;
+	}
+	else
+	{
+		if (root->data > x)
+			root->right = CreateTree(root->right, x);
+		else
+			root->left = CreateTree(root->left, x);
+	}
+	return root;
+}
+
+//中序遍历
+void Inorder(BTnode* root)
+{
+	if (root)
+	{
+		Inorder(root->left);
+		printf("%d", root->data);
+		Inorder(root->right);
+	}
+}
+int main()
+{
+	BTnode* root = NULL;
+	int x;//当前值
+	int n, /*数值个数*/i;
+	printf("请输入n=");
+	scanf_s("%d", &n);
+	printf("请输入二叉树的节点data\n");
+	for (i = 0; i < n; i++)
+	{
+		scanf_s("%d", &x);
+		root = CreateTree(root, x);
+	}
+	printf("\n中序遍历为：");
+	Inorder(root);
+	printf("\n");
+}
