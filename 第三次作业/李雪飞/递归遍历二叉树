@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include<stdlib.h>
+typedef char DataType;
+
+typedef struct BiTNode {
+
+	DataType  data;
+
+	struct BiTNode* lchild, * rchild;
+
+}BiTNode, * BiTree;
+
+//先序建立二叉树
+
+//BiTree CreateBiTree(BiTree  T) {
+//
+//	char ch;
+//	
+//
+//	scanf("%c", &ch);
+//
+//	if (ch == '@')
+//		T = NULL;
+//	else {
+//
+//		T = (BiTree)malloc(sizeof(BiTNode));
+//
+//		T->data = ch;
+//		CreateBiTree(T->lchild);
+//		CreateBiTree(T->rchild);
+//
+//	}
+//
+//	return T;//返回根节点
+//
+//}
+int CreateBinTree(BiTree* T)
+{
+	char ch;
+	scanf("%c", &ch);
+	if (ch == '#')
+		*T = NULL;  //若写成T=NULL ，可能会陷入无限循环
+	else
+	{
+		*T = (BiTree)malloc(sizeof(BiTNode));
+		(*T)->data = ch;
+		CreateBinTree(&(*T)->lchild);//left child
+		CreateBinTree(&(*T)->rchild);//right child
+	}
+	return 0;
+}
+
+
+//先序遍历二叉树
+void PreorderTraverse(BiTree T)
+{
+	if (T!=NULL)
+	{
+		printf("%c", T->data);
+		PreorderTraverse(T->lchild);
+		PreorderTraverse(T->rchild);
+	}
+}
+//中序遍历
+void InorderTraverse(BiTree T)
+{
+	if (T!=NULL)
+	{
+		
+		InorderTraverse(T->lchild);
+		printf("%c", T->data);
+		InorderTraverse(T->rchild);
+	}
+}
+//后序遍历
+void UnderorderTraverse(BiTree T)
+{
+	if (T!=NULL)
+	{
+
+		UnderorderTraverse(T->lchild);
+		UnderorderTraverse(T->rchild);
+		printf("%c", T->data);
+	}
+}
+
+int main()
+{
+	BiTree T;
+	CreateBinTree(&T);
+	printf("\n先序遍历:\n");
+	PreorderTraverse(T);
+	printf("\n中序遍历:\n");
+	InorderTraverse(T);
+	printf("\n后序遍历:\n");
+	UnderorderTraverse(T);
+
+	return 0;
+}
