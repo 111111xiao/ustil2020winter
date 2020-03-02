@@ -1,0 +1,234 @@
+//设计带静态成员的学生（Student）类
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+class Student
+{
+protected:
+	int number = 0;        //学号
+	string name;     //姓名
+
+
+public:
+	static int num;         //人数
+
+	static int Getnum()
+	{
+		return (num);
+	}
+	void Setstud(int n, string s)
+	{
+		number = n;
+		name = s;
+	}
+	void Setnumber(int n)
+	{
+		number = n;
+	}
+	void Setname(string s)
+	{
+		name = s;
+	}
+
+};
+
+class Score :Student
+{
+private:
+	double math;
+	double english;
+	double technology;
+public:
+	static double sum;         //总分
+	/*默认构造初始化*/
+	Score()
+	{
+		number = 0;
+		math = 0;
+		english = 0;
+		technology = 0;
+		num++;
+	}
+	/*拷贝构造函数*/
+	Score(const Score& h)
+	{
+		english = h.english;
+		math = h.math;
+		technology = h.technology;
+	}
+	/*输入信息*/
+	void Input()
+	{
+		int i;
+
+		cout << "<学生管理系统>" << endl;
+		cout << "例:191206130 李昱 85 80 75" << endl;
+		cout << "---------------" << endl;
+		cout << " 学 号 :"; cin >> number;
+		cout << " 姓 名 :"; cin >> name;
+		cout << " 数 学 成 绩 :"; cin >> math;
+		cout << " 英 语 成 绩 :"; cin >> english;
+		cout << " 计 算 机 成 绩:"; cin >> technology;
+		cout << "信息创建成功!" << endl;
+		cout << "---------------" << endl;
+
+	}
+	/*修改数学*/
+	void Setmath()
+	{
+		double m;
+		cout << "<数学系统>" << endl;
+		cout << "请输入修改为:"; cin >> m;
+		math = m;
+		cout << "修改成功!" << endl;
+	}
+	/*修改英语*/
+	void Setenglish()
+	{
+		double e;
+		cout << "<英语系统>" << endl;
+		cout << "请输入修改为:"; cin >> e;
+		english = e;
+		cout << "修改成功!" << endl;
+	}
+	/*修改计算机*/
+	void Settechnology()
+	{
+		double t;
+		cout << "<计算机系统>" << endl;
+		cout << "请输入修改为:"; cin >> t;
+		technology = t;
+		cout << "修改成功!" << endl;
+	}
+	/*修改成绩*/
+	void Setscore()
+	{
+		int n, a;
+		string s;
+		double m, e, t;
+		while (1)
+		{
+			system("cls");
+			cout << "<成绩管理系统>" << endl;
+			cout << "请输入:1.修改数学成绩 2.修改英语成绩 3.修改计算机成绩 4.修改全部成绩 5.退出该系统" << endl;
+	
+  //定义一个抽象快递包裹类
+  #include <iostream>
+
+#include <stdio.h>
+
+using namespace std;
+
+class Package {
+
+public:
+
+	string m_sender;
+
+	string m_addressee;
+
+	string m_location;
+
+	int m_weight;
+
+
+
+public:
+
+	virtual void calculateCost() {
+
+		cout << " ";
+
+	}
+
+
+
+};
+
+
+
+
+
+class commonPackage :public Package {
+
+
+
+public:
+
+
+
+	virtual void calculateCost() {
+
+		cout << 2 + 2 * 2;
+
+	}
+
+	commonPackage(string sender, string addressee, string location, int weight) {
+
+		m_sender = sender;
+
+		m_addressee = addressee;
+
+		m_location = location;
+
+		m_weight = weight;
+
+		cout << "寄件人：" << m_sender << "收件人：" << m_addressee << "地址：" << m_location << "重量：" << m_weight;
+
+	}
+
+
+
+};
+
+
+
+class urgentPackage :public Package {
+
+	virtual void calculateCost() {
+
+		cout << 20 + m_weight * 10 + 10 * 0.02;
+
+	}
+
+	urgentPackage(string sender, string addressee, string location, int weight) {
+
+		m_sender = sender;
+
+		m_addressee = addressee;
+
+		m_location = location;
+
+		m_weight = weight;
+
+		cout << "寄件人：" << m_sender << "收件人：" << m_addressee << "地址：" << m_location << "重量：" << m_weight;
+
+	}
+
+
+
+
+
+};
+
+int main()
+
+{
+
+	Package* Package1 = new commonPackage("ly", "嘿嘿", "建平", 123);
+
+	Package* Package2 = new commonPackage("sf", "哈哈", "朝阳", 456);
+
+	Package1->calculateCost();
+
+	Package2->calculateCost();
+
+	delete Package1;
+
+	delete Package2;
+
+	return 0;
+
+}
