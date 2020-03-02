@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef int ElementType;
+typedef struct node {
+	ElementType data;
+	struct node* pNext;
+}Node, * pNode;
+pNode Create_List(int len);
+pNode change(pNode pHead, int len);
+void ergodic(pNode pHead, int len);
+pNode insert(pNode pHead, int* len);
+int main() {
+	pNode pHead = NULL;
+	int len;
+	printf("请输入节点个数：");
+	scanf("%d", &len);
+	pHead = Create_List(len);
+	pNode p;
+	ergodic(pHead, len);
+	p = change(pHead, len);
+	ergodic(pHead, len);
+	p = insert(pHead, &len);
+	printf("此时len为:%d", len);
+	printf("\n插入成功\n");
+	ergodic(pHead, len);
+	return 0;
+}
+pNode Create_List(int len)
+{
+	pNode pHead = (pNode)malloc(sizeof(Node));							
+	pNode pTail = pHead;
+	pTail->pNext = NULL;
+
+	int i;
+	int val;
+	for (i = 0; i < len; i++) {
+		printf("输入第%d个节点的数值：", i + 1);
+		scanf("%d", &val);
+		pNode pNew = (pNode)malloc(sizeof(Node));
+		pNew->data = val;
+		pTail->pNext = pNew;
+		pNew = NULL;
+		pTail = pTail->pNext;
+	}
+	return pHead;
+}
+void ergodic(pNode pHead, int len) {
+	
+	pNode p;
+	p = pHead;
+	int j;
+	for (j = 0; j < len; j++) {
+		p = p->pNext;
+		printf("第%d个节点的数值是：%d\n", (j + 1), p->data);
+	}
+}
+pNode change(pNode pHead, int len) {
+	pNode p;
+	p = pHead;
+	int value;
+	printf("修改节点的数据\n");
+	int k;
+	for (k = 0; k < len; k++) {
+		p = p->pNext;
+		printf("输入第%d个结点要修改的数据：", k + 1);
+		scanf("%d", &value);
+		p->data = value;
+	}
+	return pHead;
+}
+pNode insert(pNode pHead, int* len) {
+	pNode p;
+	p = pHead;
+	printf("输入在第几个节点(头结点不算)后插入：");
+	int m;
+	scanf("%d", &m);
+	int i;
+	for (i = 0; i < m; i++) {
+		p = p->pNext;
+	}
+	pNode e = (pNode)malloc(sizeof(Node));
+	e->pNext = NULL;
+	printf("请输入该节点的数值：");
+	int n;
+	scanf("%d", &n);
+	e->data = n;
+	e->pNext = p->pNext;
+	p->pNext = e;
+	len++;
+	return pHead;
+}
+pNode delete(pNode pHead, int len) {
+	pNode p;
+	pNode q;
+	p = pHead;
+	printf("请输入要删除第几个节点");
+	int k;
+	scanf("%d", &k);
+	int i;
+	for (i = 0; i < k - 1; i++) {
+		p = p->pNext;
+	}
+	q = p->pNext;
+	p->pNext = q->pNext;
+	free(q);
+	q = NULL;
+	return pHead;
+}
