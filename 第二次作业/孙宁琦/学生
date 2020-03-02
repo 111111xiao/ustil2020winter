@@ -1,0 +1,115 @@
+#include<iostream>
+#include<string>
+#include<cstdio>
+using namespace std;
+
+class score//分数 
+{
+public:
+	int math;
+	int english;
+	int computer;
+	double ascore;
+	score(int math, int english, int computer);
+	score() {}
+	score(const score& a);
+};
+
+score::score(int math, int english, int computer)
+{
+	this->math = math;
+	this->english = english;
+	this->computer = computer;
+}
+
+score::score(const score& a)
+{
+	this->math = a.math;
+	this->english = a.english;
+	this->computer = a.computer;
+	this->ascore = a.ascore;
+}
+
+void astudent(score m)//学生平均成绩 
+{
+	m.ascore = ((m.english + m.math + m.computer) / 3.0);
+	cout << "平均成绩：" << m.ascore << endl;
+}
+
+class student//学生 
+{
+private:
+	string name;
+	int num;
+	score grade;
+public:
+	student(string name, int num, score t)
+	{
+		this->name = name;
+		this->num = num;
+		this->grade = t;
+	}
+	void show();
+};
+
+void student::show()
+{
+	cout << "姓名：" << name << endl;
+	cout << "学号：" << num << endl;
+	cout << "数学成绩：" << grade.math << endl;
+	cout << "英语成绩：" << grade.english << endl;
+	cout << "计算机成绩：" << grade.computer << endl;
+}
+
+void print(int i, string* name, int* num, int* math, int* english, int* computer)
+{
+	int q;
+	for (q = 0; q < i; q++)
+	{
+		score t1(math[q], english[q], computer[q]);
+		student b1(name[q], num[q], t1);
+		b1.show();
+		astudent(t1);
+	}
+}
+
+void asubject(int i, int* math, int* english, int* computer)//学科平均成绩 
+{
+	int math1 = 0, english1 = 0, computer1 = 0, t;
+	for (t = 0; t < i; t++)
+	{
+		math1 = math1 + math[t];
+		english1 = english1 + english[t];
+		computer1 = computer1 + computer[t];
+	}
+	cout << "数学平均分：" << (double)math1 / i << endl;
+	cout << "英语平均分：" << (double)english1 / i << endl;
+	cout << "计算机平均分：" << (double)computer1 / i << endl;
+}
+
+int main()
+{
+	int  num[20], math[20], english[20], computer[20], i, t, y, l, subject, right;
+	string name[20];
+	while (~printf("请输入要存储的学生个数：\n"))
+	{
+		scanf_s("%d", &i);
+		printf("请输入学生的信息：姓名、学号、数学成绩、英语成绩、计算机成绩\n");
+		for (t = 0; t < i; t++)
+			cin >> name[t] >> num[t] >> math[t] >> english[t] >> computer[t];
+		print(i, name, num, math, english, computer);
+		asubject(i, math, english, computer);
+		cout << "如果想要更改某位学生的信息请输入1，不更改输入0" << endl;
+		cin >> y;
+		if (y == 1)
+		{
+			cout << "请输入要改变第几位学生的信息" << endl;
+			cin >> l;
+			cout << "请输入该学生的信息：姓名、学号、数学成绩、英语成绩、计算机成绩" << endl;
+			cin >> name[l - 1] >> num[l - 1] >> math[l - 1] >> english[l - 1] >> computer[l - 1];
+			print(i, name, num, math, english, computer);
+			asubject(i, math, english, computer);
+		}
+	}
+	return 0;
+}
