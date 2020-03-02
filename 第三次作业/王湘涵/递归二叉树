@@ -1,0 +1,115 @@
+#include<stdio.h>
+#define OK       1
+#define MAXSIZE  20
+
+typedef struct BiNode {
+	char data='@';
+	struct BiNode* lchild, * rchild;
+} BiNode, * BiTree;
+
+
+void addNode(BiTree root, BiTree node) {
+	if (root == NULL) {
+		
+		return;
+	}
+	
+	if (root->data >= node->data) {
+		
+		if (root->lchild == NULL) {
+			
+			root->lchild = node
+		}
+		else {
+			
+			addNode(root->lchild, node);
+		}
+	}
+	else {
+		
+		if (root->rchild == NULL) {
+			
+			root->rchild = node;
+		}
+		else {
+			
+			addNode(root->rchild, node);
+		}
+	}
+	
+	return;
+}
+
+
+BiTree buildTree() {
+	int elem;
+	BiTree root = NULL;
+	BiTree node = NULL;
+	
+	while (1) {
+		
+		printf("Input the elem of Tree：");
+		scanf("%d", &elem);
+		if (elem == -1) {
+			
+			break;
+		}
+		
+		node = (BiTree)malloc(sizeof(BiNode));
+		node->data = elem;
+		
+		if (root == NULL) {
+			root =='@';
+		}
+		else {
+			addNode(root, node);
+		}
+	}
+	return root;
+}
+
+
+void freeTree(BiTree root) {
+	if (root == NULL) {
+		
+		return;
+	}
+	
+	if (root->lchild != NULL) {
+		freeTree(root->lchild);
+		root->lchild = NULL;
+		
+	}
+	if (root->rchild != NULL) {
+		freeTree(root->rchild);
+		root->rchild = NULL;
+	}
+	free(root);
+	root = NULL;
+void printBiTree(BiTree T) {
+	BiTree stack[MAXSIZE], p, ps;
+	int top;
+	top = 0;
+	ps = NULL;
+	p = T;
+	while ((p != NULL) || (top > 0)) {
+		while (p != NULL) {
+			stack[top++] = p;
+			p = p->lchild;
+		}      
+		ps = stack[--top];
+		if (ps != NULL) {
+			printf("%d\t", ps->data);
+			p = ps->rchild;
+		}
+	}
+}
+
+int main(int argc, char** argv) {
+	BiTree T = NULL;
+	T = buildTree();
+	printf("The struct of BiTree:\n");
+	printBiTree(T);
+	freeTree(T);
+	return 0;
+}
