@@ -1,0 +1,123 @@
+#include<iostream>
+
+using namespace std;
+
+typedef int Datatype;
+typedef struct Binode
+{
+	Datatype data;
+	struct Binode * rchild, * lchild;
+}binode;
+/*创建*/
+binode* Createtree()
+{
+	binode* b=NULL;
+	string n;
+	cout << "输入字符:"; cin >> n;
+	if (n == "0")
+		b = NULL;
+	else
+	{
+		b = new binode;
+		b->data = n;
+		b->lchild = Createtree();
+		b->rchild = Createtree();
+	}
+	return b;
+}
+/*先序遍历*/
+void fTraverse(binode* root)
+{
+	
+	if (root)
+	{
+		cout << "" << root->data<<" ";
+		fTraverse(root->lchild);
+		fTraverse(root->rchild);
+	}
+}
+/*中序遍历*/
+void mTraverse(binode* root)
+{
+	
+	if (root)
+	{
+		mTraverse(root->lchild);
+		cout << "" << root->data << " ";
+		mTraverse(root->rchild);
+	}
+}
+/*后序遍历*/
+void bTraverse(binode* root)
+{
+	
+	if (root)
+	{
+		bTraverse(root->lchild);
+		bTraverse(root->rchild);
+		cout << "" << root->data << " ";
+	}
+}
+/*二叉树结点数目*/
+int BitreeNodenum(binode* root)
+{
+	if (root == NULL)
+		return 0;
+	else
+		return (1 + BitreeNodenum(root->lchild) + BitreeNodenum(root->rchild));
+}
+/*二叉树深度*/
+int DepthBitree(binode* root)
+{
+	if (root == NULL)
+		return 0;
+	else
+		return (DepthBitree(root->lchild) > DepthBitree(root->rchild) )? (1 + DepthBitree(root->lchild)) :(1 + DepthBitree(root->rchild));
+}
+/*二叉树叶子结点*/
+int BitreeLeave(binode* root)
+{
+	if (root == NULL)
+		return 0;
+	else if (root->lchild == NULL && root->rchild == NULL)
+		return 1;
+	else
+		return(BitreeLeave(root->lchild) + BitreeLeave(root->rchild));
+}
+/*二叉查找树*/
+void SearchTree(binode* root, int data)
+{
+	printf("%d ", root->data);
+	if (root = NULL)
+		return;
+	else if (data == root->data)
+		return;
+	else if (data < root->data)
+		SearchTree(root->lchild, data);
+	else if (data > root->data)
+		SearchTree(root->rchild, data);
+}
+
+int main()
+{
+	binode* b;
+	cout << "即将创建二叉树" << endl;
+	b = Createtree();
+	cout << "创建成功!" << endl;
+	system("pause");
+	system("cls");
+	cout << "二叉树叶子结点为:" << BitreeLeave(b) << endl;
+	cout << "二叉树深度为:" << DepthBitree(b) << endl;
+	cout << "二叉树总结点为:" << BitreeNodenum(b) << endl;
+	cout << "先序遍历结果如下:" << endl;
+	fTraverse(b);
+	cout << endl;
+	cout << "中序遍历如下:" << endl;
+	mTraverse(b);
+	cout << endl;
+	cout << "后序遍历如下:" << endl;
+	bTraverse(b);
+	cout << endl;
+
+	return 0;
+}
