@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<malloc.h>
+#include<stdlib.h>
+#define maximum 10
+
+typedef int DATATYPE;
+typedef struct BstNode
+{
+	DATATYPE data;
+	BstNode* left, * right;
+}Bstnode;
+
+int InsertBST(Bstnode*& root, int data)
+{
+	if (root == NULL)
+	{
+		root = (Bstnode*)malloc(sizeof(BstNode));
+		root->data = data;
+		root->left = root->right = NULL;
+		return 1;
+	}
+	else if (root->data == data)
+		return NULL;
+	else if (root->data > data)
+		InsertBST(root->left, data);
+	else if (root->data < data)
+		InsertBST(root->right, data);
+}
+
+Bstnode* CreatBST()
+{
+	Bstnode* bst=NULL;
+	int len,i=0;
+	int value[20];
+	printf("请输入树的大小:"); scanf_s("%d", &len);
+	while (i < len)
+	{
+		printf("请输入树中第%d个元素:", i+1);
+		scanf_s("%d", &value[i]);
+		if (InsertBST(bst, value[i]) == 1)
+			i++;
+	}
+	return bst;
+}
+
+void MTraverse(Bstnode* bst)
+{
+	if (bst != NULL)
+	{
+		MTraverse(bst->left);
+		printf("%d ", bst->data);
+		MTraverse(bst->right);
+	}
+}
+
+int main()
+{
+	Bstnode* b;
+	printf("即将创建二叉排序树\n");
+	system("pause");
+	b=CreatBST();
+	printf("中序遍历如下:\n");
+	MTraverse(b);
+}
